@@ -72,9 +72,15 @@ const staticRoutes: StaticRoute[] = [
 export default staticRoutes;
 ```
 
-## Node Options
+## Parameters
 
-Since CRB3 Redux state no longer automatically loads node children from SiteView for performance reasons. To load node children to state you need to configure the nodeOptions parameter on your route.
+## Mappers
+
+
+
+### Node Options
+
+Since CRB3 Redux state no longer automatically loads node children from SiteView for performance reasons. To load node children to state you need to configure the nodeOptions parameter on your route along with enabling the required node data in the [withEvents customNavigation](#customnavigation) object.
 
 Here’s an example of the options available:
 
@@ -97,14 +103,19 @@ Here’s an example of the options available:
   },
 ```
 
-## Inject Redux
+### Inject Redux
 
 With version 3.0 of the Contensis React Base we’re leveraging `@loadable` to load our pages/components. We can also use this approach to dynamically load parts of our Redux Store. The `injectRedux` parameter available to our routes enables us to do this.
 
 By default the React Starter comes with an `injectSearch` function that we can pass to injectRedux to load the Search State on our routes. The `injectRedux` function can be found within `/app/src/redux/dynamic.ts`.
 
+### Link Depth 
 
-## Managing Large Entries
+The `linkDepth` parameter allows you to override the global `linkDepth` for the App on a *specific* route. This is great if you need to drill down through various linked entries to access a value however it does bring with it a hit to performance. You can mitigate this hit to performance by populating the `field` paramater (see [Managing Large Entries](#managing-large-entries)) for routes with a custom link depth.
+
+If you need to update the link depth on Static Routes see [Fetch Node](#fetch-node)
+
+### Managing Large Entries
 
 When accessing large entries, particularly those with a `linkDepth` greater than `1`, we can end up returning fields we do **not** need. These un-required fields add extra weight to the page. To combat this we can utilise the `fields` option. 
 
@@ -139,9 +150,45 @@ const contentTypeMappings: ContentTypeMapping[] = [
 export default contentTypeMappings;
 ```
 
+### Fetch Node
+
+The `fetchNode` parameter is only available on a Static Route. By enabling this paramater your static route will query entry data from the node it finds in the Site View tree under the specific path. Therefore, a static route with a `path` defined as `/blog/specific-blog-page` will only fetch data from a Site View node on your CMS with the *same* path.
+
+Fetch Node can be set via a `boolean` however the full object gives you access to: `entryMapper`, `linkDepth`, `fields`, & `params`.
+
 ## With Events
 
 WithEvents is a part of our Routing setup & it enables us to trigger events under our routes.
+
+### OnRouteLoad
+
+The OnRouteLoad event is the first event our app encounters when routing. We trigger this event **before** fetch entry data. On any OnRouteLoad event we can access the following parameters: `location`, `path`, `staticRoute`, & `statePath`.
+
+This event exposes the `routeLoadOptions` object which allows us to control elements of our app setup. 
+
+### OnRouteLoaded
+The OnRouteLoaded event is the second event our app encounters when routing. We trigger this event **after** fetching entry data. On any OnRouteLoad event we can access the following parameters: `location`, `path`, `staticRoute`, & `entry`.
+
+#### CustomNavigation
+
+The CustomNavigation object enables us to populate the App's Redux store with data for `ancestors`, `children`, `siblings` & `tree` data from Site View. This can be enabled with a boolean or by specificing a `number` depth. Enabling these options are essential for getting [Node Options](#node-options) parameters to work on routes.
+
+
+### DefaultLang
+
+Enables us to set a default language for the app. By default it's set to `en-GB`.
+
+### EntryLinkDepth
+
+This option allows us to set a global link depth for **all** requests made by the App. 
+
+:::warning
+The default `entryLinkDepth` should only be updated if you understand the consequences as it can lead to unnecessarily large paylods of data.
+:::
+
+### PreventScrollTop
+
+This `boolean` toggle allows you to enable or disable the global scroll top action that React Router triggers when routing. For finer control you can access the `location` or `path` object to create rules.
 
 ### Listings
 
