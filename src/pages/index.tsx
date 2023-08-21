@@ -11,9 +11,10 @@ function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
-      <div className="container">
-        <h1 className="hero__title">{siteConfig.title}</h1>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
+      {/* <div className="container"> */}
+        <div className="content">
+        <h1 className="hero__title">Get started developing with React and Contensis</h1>
+        <p className="hero__subtitle">Learn about the exciting possibilities of combining the versatility of React with the robust capabilities of Contensis</p>
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
@@ -22,7 +23,8 @@ function HomepageHeader() {
             Get Started
           </Link>
         </div>
-      </div>
+        </div>
+      {/* </div> */}
     </header>
   );
 }
@@ -35,7 +37,7 @@ export default function Home(): JSX.Element {
       description="Description will go into a meta tag in <head />"
     >
       <HomepageHeader />
-      <main >
+      <main className="home" >
         <HomepageFeatures />
       </main>
     </Layout>

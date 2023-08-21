@@ -38,3 +38,18 @@
 .markdown a:link {
   text-decoration: underline;
 }
+
+
+.home {
+  background-color: #002033;
+ }
+
+.content {
+  max-width: 640px;
+}
+
+.content a {
+  background-color: #ADF9EB;
+  border: none;
+  border-radius: 1px;
+}

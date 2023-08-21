@@ -20,7 +20,6 @@ const config = {
   // If you aren't using GitHub pages, you don't need these.
   organizationName: "zengenti", // Usually your GitHub org/user name.
   projectName: "contensis-react-dev", // Usually your repo name.
-
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
 
@@ -31,6 +30,7 @@ const config = {
     defaultLocale: "en",
     locales: ["en"],
   },
+
 
   presets: [
     [
@@ -74,15 +74,26 @@ const config = {
             type: "docSidebar",
             sidebarId: "tutorialSidebar",
             position: "left",
-            label: "Docs",
+            label: "Get started",
           },
-          // { to: "/blog", label: "Blog", position: "left" },
-          // {
-          //   href: "https://gitlab.zengenti.com/starter-projects/react-starter",
-          //   label: "GitLab",
-          //   position: "right",
-          // },
+          {
+            label: "React Starter",
+            to: "docs/category/react-starter",
+          },
+          {
+            href: "https://www.npmjs.com/package/@zengenti/contensis-react-base",
+            label: "CRB",
+            position: "right",
+          },
+          {
+            href: "https://gitlab.zengenti.com/starter-projects/react-starter",
+            label: "Starter",
+            position: "right",
+          },
         ],
+      },
+      colorMode: {
+        disableSwitch: true,
       },
       footer: {
         style: "light",
@@ -91,12 +102,12 @@ const config = {
             title: "Docs",
             items: [
               {
-                label: "Get Started",
+                label: "Get started",
                 to: "/docs/introduction",
               },
               {
-                label: "Docs",
-                to: "/docs/introduction",
+                label: "React Starter",
+                to: "docs/category/react-starter",
               },
             ],
           },
@@ -133,10 +144,10 @@ const config = {
         ],
         copyright: `Copyright © ${new Date().getFullYear()} Zengenti. Built with Docusaurus.`,
       },
-      prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
-      },
+      // prism: {
+      //   theme: lightCodeTheme,
+      //   // darkTheme: darkCodeTheme,
+      // },
     }),
 };
 
