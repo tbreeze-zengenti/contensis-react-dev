@@ -3,6 +3,6 @@
   "position": 2,
   "link": {
     "type": "generated-index",
-    "description": "React Starter"
+    "description": "This is our starter project for most client builds. It is driven by the latest version of Contensis React Base (currently v3.x.x)."
   }
 }
