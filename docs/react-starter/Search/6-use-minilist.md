@@ -1,62 +1,13 @@
 ---
-sidebar_position: 8
+sidebar_position: 6
 ---
 
-# Search
 
-Contensis React Base provides a wrapper for working with Contensis's Elastic search implementation. The Starter Project offers a boilerplate approach to configuring this implementation, whilst CRB also provides a variety of Hooks for rendering and interacting with the results.
-
-## Config
-
-The Search Config (`/search.config.ts`) is an object-like interface for defining search parameters. The `facets`, `listings`, and `minilist` objects provide the configurations for the `useFacets`, `useListing`, and `useMinilist` hooks to query.
-
-Every search object follows the same pattern and there is full TypeScript support available.
-
-## Mappers
-
-There are various different mappers available for Search: `results`, `resultsInfo`, `navigate`, `filterItems`, `customApi`. Each mapper has a default behaviour, provided by CRB, but in the Starter Project we export our own `results` and `resultsInfo` mapper from the `entry-to-cardprops.mapper.ts` and `state-to-resultsionformationprops.mapper.ts` files respectively. In most circumstances you will only ever have to update these mappers, however, the `navigate` and `filterItems` mappers can be useful in some siutations.
-
-### Results
-
-The `results` mapper provides a method for mapping search result data to component props using the JSON Path Mapper syntax.
-
-Every mapping object created in this mapper can be assigned to a `contentTypeId` in the exported `mappers` object by using the `contentTypeId` as a key and the map object as the value. Every search result that returns that `contentTypeId` will then use that mapping configuration.
-
-```ts title="An example mapper applied to a Content Type ID of 'news'"
-const newsMapper = {
-    title: 'entryTitle',
-    image: 'entryThumbnail',
-}
-
-export const mappers = {
-    news: newsMapper,
-};
-```
-
-### ResultsInfo
-
-The `resultsInfo` mapper allows us to manipulate the return value of `resultsInfo` on any search hook by amending the `searchSummaryTemplate` object. When rendering our search results we can then access parts of the `searchSummaryTemplate` via the `resultsInfo` prop on any given search-hook. 
-
-## useFacets
-
-The `useFacets` hook is designed for accessing the Facets part of the Search Config and rendering multi-faceted search pages.
-
-## useListing
-
-A Listing is a feature of the Search package which allows us to display a page of results.
-
-### When to use useListing?
-
-A Listing is best used for rendering large filterable lists of data:
-
-- Displaying a page of Cards with filtering/facets
-- Rendering paged content such as a blog
-
-## useMinilist
+# useMinilist
 
 The MiniList is a feature of the Search package which allows us to return a selection of search results within a component or page.
 
-### When to use useMinilist?
+## When to use useMinilist?
 
 Since MiniLists are designed to return small selections of data they are perfect for:
 
@@ -64,11 +15,11 @@ Since MiniLists are designed to return small selections of data they are perfect
 - Returning a list of related Entries at the end of an entry
 - Fetching data from an external API
 
-### How to use useMinilist
+## How to use useMinilist
 
 To get started with a Minilist you’ll need a Content Type in your CMS Project that you wish to fetch. For demonstration purposes we'll be returning `blogPost` to create a Minilist that renders 3 blog posts. 
 
-#### Query
+### Query
 
 Next you'll need to define your query inside `search.config.ts`. Inside the query you'll need to define the `contentTypeID` you wish to fetch along with a few other parameters.
 
@@ -86,7 +37,7 @@ minilist: {
   } as { [key: string]: Listing },
 ```
 
-#### Mapper
+### Mapper
 
 Our hook will require a mapper to map the queried data to the relevant component props. We can define a mapper for `blogPost` Content Type's in `entry-to-cardprops.mapper.ts`. This is a special mapper that allows us to define mappings for Content Types that are queried by Search.
 
@@ -105,7 +56,7 @@ export const mappers = {
 };
 ```
 
-#### Loading Search
+### Loading Search
 
 For performance reasons we do **not** load Search state on any route. To load Search state we need to inject it to the required route.
 
@@ -131,7 +82,7 @@ const contentTypeMappings: ContentTypeMapping[] = [
 },
 ```
 
-#### Rendering
+### Rendering
 
 The `useMinilist` hook is executed client-side so there's a few steps to jump through to get it working.
 
@@ -193,9 +144,9 @@ return (
 export default BlogPage;
 ```
 
-#### Extras
+## Extras
 
-##### Replacing setTimeout
+### Replacing setTimeout
 
 Using `setTimeout` to ensure our Search state is available is fine in development but not so good in production. The best method for checking if the Search state is ready is Redux itself. We can use a selector to check if Search state exists, if it does it's safe to execute our `useEffect`.
 

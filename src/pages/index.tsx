@@ -11,7 +11,6 @@ function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
-      {/* <div className="container"> */}
         <div className="content">
         <h1 className="hero__title">Get started developing with React and Contensis</h1>
         <p className="hero__subtitle">Learn about the exciting possibilities of combining the versatility of React with the robust capabilities of Contensis</p>
@@ -24,7 +23,6 @@ function HomepageHeader() {
           </Link>
         </div>
         </div>
-      {/* </div> */}
     </header>
   );
 }
