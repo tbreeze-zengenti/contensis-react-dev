@@ -40,5 +40,5 @@ By default the React Starter comes with an `injectSearch` function that we can p
 
 ### Entry Link Depth
 
-See [Entry Link Depth](docs/react-starter/Routing/entry-link-depth) for more information.
+See [Entry Link Depth](/react-starter/routing/entry-link-depth) for more information.
 

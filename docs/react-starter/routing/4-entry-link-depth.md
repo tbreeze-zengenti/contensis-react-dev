@@ -16,6 +16,6 @@ With Events can define a global link depth.
 
 ## Define the Entry Link Depth on each Route
 
-The `linkDepth` parameter allows you to override the global `linkDepth` for the App on a *specific* route. This is great if you need to drill down through various linked entries to access a value however it does bring with it a hit to performance. You can mitigate this hit to performance by populating the `field` paramater (see [Managing Large Entries](#managing-large-entries)) for routes with a custom link depth.
+The `linkDepth` parameter allows you to override the global `linkDepth` for the App on a *specific* route. This is great if you need to drill down through various linked entries to access a value however it does bring with it a hit to performance. You can mitigate this hit to performance by populating the `field` paramater (see [Optimising Large Entries](/react-starter/advanced/tips/optimising-large-entries)) for routes with a custom link depth.
 
-If you need to update the link depth on Static Routes see [Fetch Node](#fetch-node)
+If you need to update the link depth on Static Routes see [Fetch Node](#/react-starter/routing/static-routes#fetch-node)

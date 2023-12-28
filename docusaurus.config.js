@@ -67,19 +67,19 @@ const config = {
             items: [
               {
                 label: "Installation",
-                to: "/react-starter/installation",
+                to: "/react-starter/getting-started/installation",
+              },
+              {
+                label: "Basics",
+                to: "/react-starter/basics/components",
               },
               {
                 label: "Routing",
-                to: "/react-starter/Routing/routing",
+                to: "/react-starter/routing/routing",
               },
               {
                 label: "Search",
-                to: "/react-starter/Search/search",
-              },
-              {
-                label: "Redux",
-                to: "/react-starter/redux",
+                to: "/react-starter/search/search",
               },
             ],
           },
@@ -118,7 +118,7 @@ const config = {
             ],
           },
         ],
-        copyright: `This website is not officially endorsed or affiliated with Zengenti or Contensis. It's a personal project created by <a href="mailto:t.breeze@zengenti.com">Tim Breeze (t.breeze@zengenti.com)</a>.`,
+        copyright: `This website is not officially endorsed or affiliated with Zengenti or Contensis`,
       },
       prism: {
         theme: lightCodeTheme,
