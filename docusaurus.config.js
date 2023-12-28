@@ -9,48 +9,28 @@ const config = {
   title: "Contensis React Dev",
   tagline: "Kick-start your Contensis development with React",
   favicon: "img/icon.svg",
-
-  // Set the production url of your site here
   url: "https://your-docusaurus-test-site.com",
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
-
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: "zengenti", // Usually your GitHub org/user name.
-  projectName: "contensis-react-dev", // Usually your repo name.
+  organizationName: "zengenti", 
+  projectName: "contensis-react-dev",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
-
-  // Even if you don't use internalization, you can use this field to set useful
-  // metadata like html lang. For example, if your site is Chinese, you may want
-  // to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: "en",
     locales: ["en"],
   },
-
 
   presets: [
     [
       "classic",
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
+        
         docs: {
+          routeBasePath: '/',
           sidebarPath: require.resolve("./sidebars.js"),
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          // editUrl:
-          //   "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
         },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          // editUrl:
-          //   "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
-        },
+        blog:  false,
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
@@ -61,39 +41,23 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      // Replace with your project's social card
       image: "img/docusaurus-social-card.jpg",
       navbar: {
-        title: "Contensis React Dev",
+        title: "Contensis React",
         logo: {
           alt: "Zengenti rocket ship in a hexagon",
           src: "img/icon.svg",
         },
         items: [
           {
-            type: "docSidebar",
-            sidebarId: "tutorialSidebar",
-            position: "left",
-            label: "Get started",
-          },
-          {
-            label: "React Starter",
-            to: "docs/category/react-starter",
-          },
-          {
-            href: "https://www.npmjs.com/package/@zengenti/contensis-react-base",
-            label: "CRB",
-            position: "right",
-          },
-          {
             href: "https://gitlab.zengenti.com/starter-projects/react-starter",
-            label: "Starter",
+            label: "React Starter",
             position: "right",
           },
         ],
       },
       colorMode: {
-        disableSwitch: true,
+        disableSwitch: false,
       },
       footer: {
         style: "light",
@@ -102,12 +66,20 @@ const config = {
             title: "Docs",
             items: [
               {
-                label: "Get started",
-                to: "/docs/introduction",
+                label: "Installation",
+                to: "/react-starter/installation",
               },
               {
-                label: "React Starter",
-                to: "docs/category/react-starter",
+                label: "Routing",
+                to: "/react-starter/Routing/routing",
+              },
+              {
+                label: "Search",
+                to: "/react-starter/Search/search",
+              },
+              {
+                label: "Redux",
+                to: "/react-starter/redux",
               },
             ],
           },
@@ -132,6 +104,10 @@ const config = {
             title: "Community",
             items: [
               {
+                label: 'GitLab',
+                href: 'https://gitlab.zengenti.com/starter-projects',
+              },
+              {
                 label: "Contensis Blog",
                 href: "https://www.contensis.com/community/blog",
               },
@@ -142,12 +118,12 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Zengenti. Built with Docusaurus.`,
+        copyright: `This website is not officially endorsed or affiliated with Zengenti or Contensis. It's a personal project created by <a href="mailto:t.breeze@zengenti.com">Tim Breeze (t.breeze@zengenti.com)</a>.`,
       },
-      // prism: {
-      //   theme: lightCodeTheme,
-      //   // darkTheme: darkCodeTheme,
-      // },
+      prism: {
+        theme: lightCodeTheme,
+        darkTheme: darkCodeTheme,
+      },
     }),
 };
 

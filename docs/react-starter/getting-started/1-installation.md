@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+image: https://i.imgur.com/mErPwqL.png
 ---
 
 # Installation
@@ -8,7 +9,7 @@ React Starter is a starter project built upon Zengenti's Contensis React Base fr
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/en) version 16 or above (which can be check by running `node -v`). We recommend using [nvm](https://github.com/nvm-sh/nvm) for managing multiple versions of Node.
+- [Node.js](https://nodejs.org/en) version 18 or above (which can be check by running `node -v`). We recommend using [nvm](https://github.com/nvm-sh/nvm) for managing multiple versions of Node.
 
 ## Installation
 

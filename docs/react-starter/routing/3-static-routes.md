@@ -4,11 +4,11 @@ sidebar_position: 3
 
 # Static Routes
 
-Static Routes are a sort of “what you see what you get” form of routing. They enable you to define a `path` under which a specific `component` will load. 
+Static Routes are a “what you is see what you get” form of routing. They enable you to define a `path` under which a specific `component` will load. 
 
 An example Static Route file can be found below - this example was copied from the React Starter repository.
 
-```jsx title="src/app/routes/StaticRoutes/ts"
+```jsx title="src/app/routes/staticRoutes.ts"
 import { StaticRoute } from '@zengenti/contensis-react-base';
 import { CorePages, Home, Search } from '~/dynamic/pages';
 import { injectSearch } from '../redux/dynamic';

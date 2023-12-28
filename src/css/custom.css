@@ -4,8 +4,10 @@
  * work well for content-centric websites.
  */
 
+ @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 /* You can override the default Infima variables here. */
 :root {
+  --ifm-font-family-base: 'Inter';
   --ifm-color-primary: #002033;
   --ifm-color-primary-dark: #29784c;
   --ifm-color-primary-darker: #277148;
@@ -29,6 +31,7 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
+
 @media screen and (min-width: 996px) {
   .footer__links {
     margin-bottom: 4rem;
@@ -37,6 +40,10 @@
 
 .markdown a:link {
   text-decoration: underline;
+}
+
+.hero--primary {
+  flex: 1;
 }
 
 
@@ -53,3 +60,7 @@
   border: none;
   border-radius: 1px;
 }
+
+/* .menu__list-item--collapsed {
+  text-transform: capitalize;
+} */
