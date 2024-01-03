@@ -43,7 +43,7 @@ const config = {
     ({
       image: "img/docusaurus-social-card.jpg",
       navbar: {
-        title: "Contensis React",
+        title: "Contensis React Dev",
         logo: {
           alt: "Zengenti rocket ship in a hexagon",
           src: "img/icon.svg",
