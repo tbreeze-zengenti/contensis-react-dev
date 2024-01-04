@@ -118,7 +118,7 @@ const config = {
             ],
           },
         ],
-        copyright: `This website is not officially endorsed or affiliated with Zengenti or Contensis`,
+        copyright: `Copyright © 2024 Zengenti Ltd. Built with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,
