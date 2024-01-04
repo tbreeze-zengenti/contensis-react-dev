@@ -34,11 +34,6 @@ The Access Token is for a specific CMS & not unique to a CMS project. Therefore 
 
 The public-facing URL for this web application, it is not required for connecting to the Contensis CMS.
 
-:::caution
-By default, the `<Meta>` component uses the `PUBLIC_URL` to generate canonical URLs. If you wish to use this component then ensure your `PUBLIC_URL` is populated correctly.
-:::
-
-
 ## Multiple Environments
 
 You may create more env files for different CMS environments by applying a suffix `.{suffix}` to the file name. For example a development env might look like: `.env.development`

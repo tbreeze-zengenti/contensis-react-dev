@@ -4,10 +4,6 @@ sidebar_position: 1
 
 # The Store
 
-:::caution
-This page is under construction. Some sections may be incomplete or missing.
-:::
-
 ## Selectors and Actions
 
 Contensis React Base also provides a variety of Selectors and Actions for accessing or manipulating your application's Store. Generally, the naming of these Selectors and Actions correlate with the object structure of the Store. 

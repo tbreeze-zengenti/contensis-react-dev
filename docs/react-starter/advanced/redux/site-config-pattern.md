@@ -16,32 +16,33 @@ A site config is useful for anything that’s going to be used site-wide such as
 
 ### How is it setup?
 
-The Site Config pattern inside the develop branch of React Starter (redux/siteConfig) has everything required to access a Content Type called siteSettings. To use it for your project you will have to extend the siteConfigMapper to suit your data & create selectors to access that data.
+The Site Config pattern inside the develop branch of React Starter (redux/siteConfig) has everything required to access a Content Type called `siteSettings`. To use it for your project you will have to extend the `siteConfigMapper` to suit your data & create selectors to access that data.
 
-#### Change the Content Type
+### Change the Content Type
 
-To access a Content Type without the ID of siteSettings you can amend the value of ContentTypes.config in the Schema file.
+To access a Content Type without the ID of `siteSettings` you can amend the value of `ContentTypes.config` in the Schema file.
 
-#### How do I access my data?
+### How do I access my data?
 
 The process of accessing data from the Site Config is similiar to the process of mapping data to components.
 
 As an example here is the shape of the API call returned from Leif’s `siteSettings` content type:
 
-```json title="Leif’s siteSettings Delivery API object"
+```json
 "entryThumbnail": null,
-"linkedinLink": "https://www.linkedin.com/showcase/contensis",
-"twitterLink": "https://twitter.com/contensis?lang=en",
+"linkedinLink": "<https://www.linkedin.com/showcase/contensis>",
+"twitterLink": "<https://twitter.com/contensis?lang=en>",
 "entryDescription": null,
 "logo": {},
 "sys": {},
 "copyrightDate": "2021-01-01T00:00:00",
 "entryTitle": "Leif",
-"facebookLink": "https://en-gb.facebook.com/",
+"facebookLink": "<https://en-gb.facebook.com/>",
 "copyrightName": "Leif"
+
 ```
 
-To create an object of Social Media links you could map to these values in the SiteConfigMapper like so:
+To create an object of Social Media links you could map to these values in the `SiteConfigMapper` like so:
 
 ```jsx
 export const SiteConfigMapper = {
@@ -52,6 +53,7 @@ export const SiteConfigMapper = {
 		facebook: 'facebookLink'
 	},
 };
+
 ```
 
 With that mapping in place it’s possible to see the App’s state update in Redux Dev Tools.
@@ -62,6 +64,7 @@ To access the Social you’ll need a Selector. These allow you to use hooks prov
 export const selectSocial = (state: any) => {
   return state.siteConfig.config?.social;
 };
+
 ```
 
 The return simply drills down through the state object, which is everything we can see in Redux Dev Tools.

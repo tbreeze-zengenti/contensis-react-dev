@@ -26,7 +26,7 @@ Enables us to set a default language for the app. By default it's set to `en-GB`
 This option allows us to set a global link depth for **all** requests made by the App. 
 
 :::warning
-The default `entryLinkDepth` should only be updated if you understand the consequences as it can lead to unnecessarily large paylods of data.
+The default `entryLinkDepth` should only be updated if you understand the consequences as it can lead to unnecessarily large payloads.
 :::
 
 ## PreventScrollTop

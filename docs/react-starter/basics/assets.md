@@ -1,12 +1,9 @@
 ---
-sidebar_position: 1
+sidebar_position: 4
 ---
 
-# Overview
-
-Routing is supported by React Router.
+# Assets
 
 :::caution
 This page is under construction. Some sections may be incomplete or missing.
 :::
-
