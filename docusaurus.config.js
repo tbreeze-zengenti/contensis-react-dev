@@ -82,11 +82,11 @@ const config = {
               },
               {
                 label: "Routing",
-                to: "/react-starter/routing/routing",
+                to: "/react-starter/routing",
               },
               {
                 label: "Search",
-                to: "/react-starter/search/search",
+                to: "/react-starter/search",
               },
             ],
           },
