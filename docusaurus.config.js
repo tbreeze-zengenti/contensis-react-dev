@@ -6,7 +6,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "Contensis React Dev",
+  title: "React Starter",
   tagline: "Kick-start your Contensis development with React",
   favicon: "img/icon.svg",
   url: "https://your-docusaurus-test-site.com",
@@ -43,7 +43,7 @@ const config = {
     ({
       image: "img/docusaurus-social-card.jpg",
       navbar: {
-        title: "Contensis React Dev",
+        title: "React Starter",
         logo: {
           alt: "Zengenti rocket ship in a hexagon",
           src: "img/icon.svg",
