@@ -38,8 +38,10 @@ const config = {
     ],
   ],
 
+
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+
     ({
       image: "img/docusaurus-social-card.jpg",
       navbar: {
@@ -58,6 +60,11 @@ const config = {
       },
       colorMode: {
         disableSwitch: false,
+      },
+      announcementBar: {
+        content: '🏗️ Under Construction: Some pages may be missing or incomplete ',
+        backgroundColor: '#f5f6f7',
+        isCloseable: true,
       },
       footer: {
         style: "light",

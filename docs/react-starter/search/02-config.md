@@ -8,3 +8,6 @@ The Search Config (`/search.config.ts`) is an object-like interface for defining
 
 Every search object follows the same pattern and there is full TypeScript support available.
 
+:::caution
+This page is under construction. Some sections may be incomplete or missing.
+:::

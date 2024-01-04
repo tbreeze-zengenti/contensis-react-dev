@@ -4,6 +4,10 @@ sidebar_position: 1
 
 # Composer
 
+:::caution
+This page is under construction. Some sections may be incomplete or missing.
+:::
+
 ## CMS Setup
 
 Firstly, inside Contensis we’ll need to add a **Composer** field to our chosen Content Type & then include a **Rich Text** field inside the composer. 

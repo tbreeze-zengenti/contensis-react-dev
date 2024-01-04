@@ -7,6 +7,10 @@ sidebar_position: 6
 
 The MiniList is a feature of the Search package which allows us to return a selection of search results within a component or page.
 
+:::caution
+This page is under construction. Some sections may be incomplete or missing.
+:::
+
 ## When to use useMinilist?
 
 Since MiniLists are designed to return small selections of data they are perfect for:

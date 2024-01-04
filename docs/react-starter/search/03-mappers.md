@@ -6,6 +6,10 @@ sidebar_position: 3
 
 There are various different mappers available for Search: `results`, `resultsInfo`, `navigate`, `filterItems`, `customApi`. Each mapper has a default behaviour, provided by CRB, but in the Starter Project we export our own `results` and `resultsInfo` mapper from the `entry-to-cardprops.mapper.ts` and `state-to-resultsionformationprops.mapper.ts` files respectively. In most circumstances you will only ever have to update these mappers, however, the `navigate` and `filterItems` mappers can be useful in some siutations.
 
+:::caution
+This page is under construction. Some sections may be incomplete or missing.
+:::
+
 ## Results
 
 The `results` mapper provides a method for mapping search result data to component props using the JSON Path Mapper syntax.
