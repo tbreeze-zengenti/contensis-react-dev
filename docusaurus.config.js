@@ -62,7 +62,7 @@ const config = {
         disableSwitch: false,
       },
       announcementBar: {
-        content: '🏗️ Under Construction: Some pages may be missing or incomplete ',
+        content: '🏗️ Under Construction: Some sections may be missing or incomplete. Feedback can be submitted <a href="https://forms.gle/nHWUt46u58TbmBxu7">here</a>.',
         backgroundColor: '#f5f6f7',
         isCloseable: true,
       },
@@ -125,7 +125,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © 2024 Zengenti Ltd. Built with Docusaurus.`,
+        // copyright: `Copyright © 2024 Zengenti Ltd. Built with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,
