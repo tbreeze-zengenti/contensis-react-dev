@@ -52,6 +52,16 @@ const sidebars = {
               id: 'react-starter/search/search'
             },
             {
+              type: 'doc',
+              label: 'Config',
+              id: 'react-starter/search/config'
+            },
+            {
+              type: 'doc',
+              label: 'Mappers',
+              id: 'react-starter/search/mappers'
+            },
+            {
               type: 'category',
               label: 'Hooks',
               collapsed: false,

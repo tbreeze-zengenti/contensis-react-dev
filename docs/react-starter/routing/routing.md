@@ -90,3 +90,13 @@ The `linkDepth` parameter allows you to override the global `linkDepth` for the 
 
 You can mitigate this hit to performance by populating the `field` argument (see [Optimising Large Entries](/react-starter/advanced/tips/optimising-large-entries)) for routes with a custom link depth.
 
+
+## Inject Redux
+
+With version 3.0 of the Contensis React Base we’re leveraging `@loadable` to load our pages/components. We can also use this approach to dynamically load parts of our Redux Store. The `injectRedux` parameter available to our routes enables us to do this.
+
+By default the React Starter comes with an `injectSearch` function that we can pass to the `injectRedux` argument to load the Search State on our routes. 
+
+The `injectRedux` function can be found within `/app/src/redux/dynamic.ts`.
+
+
