@@ -41,7 +41,7 @@ To upgrade your Node.js version, follow these steps:
 
 We recommend you regularly check for dependency updates and aim to upgrade [MINOR or PATCH versions](https://semver.org/) when available.
 
-We **highly recommend** handling depdency updates in a feature branch to avoid blocking development in other branches.
+We **highly recommend** handling dependency updates in a feature branch to avoid blocking development in other branches.
 
 ### Maintaining dependencies
 
@@ -53,3 +53,4 @@ Maintaining dependencies can be complex, especially with a large number of depen
     * This command updates all dependencies based on the [semver constraints](https://docs.npmjs.com/about-semantic-versioning) specified in the `package.json`.
 
 The default dependencies in React Starter have defined semver constraints, allowing you to run npm outdated and npm update to upgrade to the latest MINOR and PATCH versions as shown in the "wanted" column of the outdated list. However, due diligence is required for packages installed by you or another developer.
+
