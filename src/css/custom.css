@@ -3,32 +3,71 @@
  * bundles Infima by default. Infima is a CSS framework designed to
  * work well for content-centric websites.
  */
-
  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-font-family-base: 'Inter';
-  --ifm-color-primary: #002033;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-font-family-base: 'Inter', sans-serif;
+
+  --ifm-color-primary: #a22d15;
+  --ifm-color-primary-dark: #922913;
+  --ifm-color-primary-darker: #8a2612;
+  --ifm-color-primary-darkest: #71200f;
+  --ifm-color-primary-light: #b23217;
+  --ifm-color-primary-lighter: #ba3418;
+  --ifm-color-primary-lightest: #d33b1b;
+
+  --body-color: #FEFDFD;
+  --text-color: #100402;
+  --border-color: #fae0db;
+  --border-color-40: rgba(250, 224, 219, 0.4);
+  --bg-color: #fdf0ed;
+  --logo-color:   rgba(232, 100, 75);
+  --menu-color: #403939;
+
+  --ifm-footer-background-color: var(--body-color);
+  --ifm-navbar-background-color: var(--body-color);
+  --ifm-global-shadow-lw: 0 1px 2px 0 var(--border-color-40);
+  --ifm-menu-color: var(--menu-color);
+  --ifm-menu-color-background-active: var(--bg-color);
+  --ifm-breadcrumb-item-background-active: var(--bg-color);
+
+  --ifm-font-color-base: var(--text-color);
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  --14px: 0.875rem;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme="dark"] {
-  --ifm-color-primary: #e75f44;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
+  --ifm-color-primary: #99f8e8;
+  --ifm-color-primary-dark: #73f5e0;
+  --ifm-color-primary-darker: #61f4db;
+  --ifm-color-primary-darkest: #28f0cf;
+  --ifm-color-primary-light: #bffbf0;
+  --ifm-color-primary-lighter: #d1fcf5;
+  --ifm-color-primary-lightest: #ffffff;
+
+  --body-color: #000E15;
+  --text-color: #f5fefd;
+  --bg-color: #001723;
+  --border-color: #1a3441;
+  --border-color-40: rgba(26, 52, 65, 0.4);
+  --logo-color: rgba(153, 248, 232);
+  --menu-color: #E1E5E5;
+
+
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+body {
+  font-family: var(--ifm-font-family-base);
+  background-color:var(--body-color) ;
+}
+
+footer {
+  border-top: 1px solid var(--border-color-40);
 }
 
 
@@ -59,4 +98,9 @@
   background-color: #ADF9EB;
   border: none;
   border-radius: 1px;
+}
+
+/* Sidemenu */
+.menu__list {
+  font-size: var(--14px);
 }

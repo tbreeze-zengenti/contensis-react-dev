@@ -1,6 +1,5 @@
 ---
 sidebar_position: 1
-image: https://i.imgur.com/mErPwqL.png
 ---
 
 # Installation

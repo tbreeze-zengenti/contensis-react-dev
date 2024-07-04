@@ -41,6 +41,30 @@ const config = {
       }),
     ],
   ],
+  // headTags: [
+  //   {
+  //     tagName: 'link',
+  //     attributes: {
+  //       rel: 'preconnect',
+  //       href: 'https://fonts.googleapis.com',
+  //     }
+  //   },
+  //   {
+  //     tagName: 'link',
+  //     attributes: {
+  //       rel: 'preconnect',
+  //       href: 'https://fonts.gstatic.com',
+  //       crossOriginIsolated: 'true',
+  //     },
+  //   },
+  //   {
+  //     tagName: 'link',
+  //     attributes: {
+  //       rel: 'stylesheet',
+  //       href: 'https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap'
+  //     }
+  //   }
+  // ],
 
 
   themeConfig:
@@ -49,15 +73,16 @@ const config = {
     ({
       image: "img/docusaurus-social-card.jpg",
       navbar: {
-        title: "React Starter",
+        title: "Contensis React Starter",
         logo: {
-          alt: "Zengenti rocket ship in a hexagon",
-          src: "img/icon.svg",
+          alt: "A cube at an isometic angle",
+          src: "img/logo-light.svg",
+          srcDark: "img/logo-dark.svg"
         },
         items: [
           {
             href: "https://gitlab.zengenti.com/starter-projects/react-starter",
-            label: "React Starter",
+            label: "GitLab",
             position: "right",
           },
         ],
@@ -67,7 +92,8 @@ const config = {
       },
       announcementBar: {
         content: '🏗️ Under Construction: Some sections may be missing or incomplete. Feedback can be submitted <a href="https://forms.gle/nHWUt46u58TbmBxu7">here</a>.',
-        backgroundColor: '#f5f6f7',
+        backgroundColor: 'var(--bg-color)',
+        textColor: 'var(--text-color)',
         isCloseable: true,
       },
       footer: {
