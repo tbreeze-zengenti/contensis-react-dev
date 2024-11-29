@@ -10,13 +10,13 @@ An overview of the routing setup in React Starter.
 This page is under construction. Some sections may be incomplete or missing.
 :::
 
-## Content Type Mapping
+## Content Type Routes
 
-Routes loaded via Content Type Mappings are based on the Content Types in the current project. At it’s most basic the `contentTypeID` will pair a component (normally a page component) with the corresponding Content Type value from the CMS. 
+Routes loaded via Content Type Routes are based on the Content Types in the current project. At it’s most basic the `contentTypeID` will pair a component (normally a page component) with the corresponding Content Type value from the CMS. 
 
 An example Content Type Mapping file can be found below - this example was copied from the React Starter repository. 
 
-```jsx title="src/app/routes/ContentTypeMappings.ts"
+```jsx title="src/app/routes/ContentTypeRoutes.ts"
 import { ContentTypeMapping } from '@zengenti/contensis-react-base';
 
 import { ContentTypes } from '../schema';

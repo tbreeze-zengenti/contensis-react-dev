@@ -65,7 +65,10 @@ const config = {
   //     }
   //   }
   // ],
-
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
 
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
@@ -157,6 +160,7 @@ const config = {
         ],
         // copyright: `Copyright © 2024 Zengenti Ltd. Built with Docusaurus.`,
       },
+
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
