@@ -102,6 +102,12 @@ graph TD
     D -->|no classic page| E[Error page]
 ```
 
+:::info
+This routing structure can be beneficial if you're still migrating from Classic Contensis to Content Types and Entries. When the Block's request handler does not find a suitable node in the Site View tree it will fallback to a Classic URL. This can enable you to more easily migrate your website section by section from Classic to CT&E.
+:::
+
+
+
 ### Content Type Routes
 
 This pattern means that Content Type routes will always resolve to the Block so long as they are assigned a Renderer, see [Content Type Rendering](/react-starter/deployment/blocks#content-type-rendering). 
