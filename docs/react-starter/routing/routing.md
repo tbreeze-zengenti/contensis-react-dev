@@ -88,7 +88,7 @@ Fetch Node is a dynamic argument, it can be defined as a `boolean` or an `object
 
 The `linkDepth` parameter allows you to override the global `linkDepth` for the App on a *specific* route. This is great if you need to drill down through various linked entries to access a value however it does bring with it a hit to performance.
 
-You can mitigate this hit to performance by populating the `field` argument (see [Optimising Large Entries](/react-starter/advanced/tips/optimising-large-entries)) for routes with a custom link depth.
+You can mitigate this hit to performance by populating the `field` argument (see [Optimising Large Entries](/docs/react-starter/advanced/tips/optimising-large-entries)) for routes with a custom link depth.
 
 
 ## Inject Redux

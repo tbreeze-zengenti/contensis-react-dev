@@ -90,19 +90,19 @@ const config = {
             items: [
               {
                 label: "Installation",
-                to: "/react-starter/getting-started/installation",
+                to: "/docs/react-starter/getting-started/installation",
               },
               {
                 label: "Basics",
-                to: "/react-starter/basics/components",
+                to: "/docs/react-starter/basics/components",
               },
               {
                 label: "Routing",
-                to: "/react-starter/routing",
+                to: "/docs/react-starter/routing",
               },
               {
                 label: "Search",
-                to: "/react-starter/search",
+                to: "/docs/react-starter/search",
               },
             ],
           },

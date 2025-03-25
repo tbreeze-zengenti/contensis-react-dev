@@ -110,11 +110,11 @@ This routing structure can be beneficial if you're still migrating from Classic 
 
 ### Content Type Routes
 
-This pattern means that Content Type routes will always resolve to the Block so long as they are assigned a Renderer, see [Content Type Rendering](/react-starter/deployment/blocks#content-type-rendering). 
+This pattern means that Content Type routes will always resolve to the Block so long as they are assigned a Renderer, see [Content Type Rendering](/docs/react-starter/deployment/blocks#content-type-rendering). 
 
 ### Static Routes
 
-For Static Routes however you will have to ensure the corresponding Site View node has the correct renderer assigned, see [Site View Rendering](/react-starter/deployment/blocks#site-view-rendering).
+For Static Routes however you will have to ensure the corresponding Site View node has the correct renderer assigned, see [Site View Rendering](/docs/react-starter/deployment/blocks#site-view-rendering).
 
 ### Server Features
 
@@ -128,7 +128,7 @@ The `manifest.json` file, normally located at the root of a project, allows some
 | --- | --- | --- | --- |
 | `port` | `number` | `3001` | Allows you define a custom port |
 | `static_paths` | `string[]` | `[’static’, ‘image-library’]` | Allows you to add additional static paths. The default values will be retained. |
-| `enableFullUriRouting` | `boolean` | `false` | See [Full URI Routing](/react-starter/deployment/blocks#full-uri-routing)  |
+| `enableFullUriRouting` | `boolean` | `false` | See [Full URI Routing](/docs/react-starter/deployment/blocks#full-uri-routing)  |
 
 ### Full URI Routing
 
@@ -146,7 +146,7 @@ With Blocks you no longer have to define Reverse Proxy paths (`REVERSE_PROXY_PAT
 
 ### Static Assets
 
-Static Assets should be handled automatically in a CRB app since `static` is a default static path within the [Manifest](/react-starter/deployment/blocks#manifest).
+Static Assets should be handled automatically in a CRB app since `static` is a default static path within the [Manifest](/docs/react-starter/deployment/blocks#manifest).
 
 ## Branching and Previewing
 
