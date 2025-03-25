@@ -82,7 +82,7 @@ export function diffHighlight(Prism) {
         newTokens.push(token);
       }
     });
-    console.log(newTokens);
+    // console.log(newTokens);
     env.tokens = newTokens;
   });
 }
