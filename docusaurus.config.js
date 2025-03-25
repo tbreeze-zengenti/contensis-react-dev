@@ -9,7 +9,7 @@ const config = {
   title: "React Starter",
   tagline: "Kick-start your Contensis development with React",
   favicon: "img/icon.svg",
-  url: "https://your-docusaurus-test-site.com",
+  url: "https://react-starter.com/",
   baseUrl: "/",
   organizationName: "zengenti", 
   projectName: "contensis-react-dev",
@@ -30,7 +30,9 @@ const config = {
           routeBasePath: '/',
           sidebarPath: require.resolve("./sidebars.js"),
         },
-        blog:  false,
+        blog:  {
+          showReadingTime: true,
+        },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
@@ -83,6 +85,11 @@ const config = {
           srcDark: "img/logo-dark.svg"
         },
         items: [
+          { 
+            to: 'blog', 
+            label: 'Blog',
+            position: 'left'
+          },
           {
             href: "https://gitlab.zengenti.com/starter-projects/react-starter",
             label: "GitLab",
@@ -164,6 +171,7 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+        additionalLanguages: ["diff", "diff-ts"],
       },
     }),
 };
