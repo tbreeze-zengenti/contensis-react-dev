@@ -19,15 +19,12 @@ const config = {
     defaultLocale: "en",
     locales: ["en"],
   },
-
   presets: [
     [
       "classic",
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
-        
         docs: {
-          routeBasePath: '/',
           sidebarPath: require.resolve("./sidebars.js"),
         },
         blog:  {
@@ -43,38 +40,12 @@ const config = {
       }),
     ],
   ],
-  // headTags: [
-  //   {
-  //     tagName: 'link',
-  //     attributes: {
-  //       rel: 'preconnect',
-  //       href: 'https://fonts.googleapis.com',
-  //     }
-  //   },
-  //   {
-  //     tagName: 'link',
-  //     attributes: {
-  //       rel: 'preconnect',
-  //       href: 'https://fonts.gstatic.com',
-  //       crossOriginIsolated: 'true',
-  //     },
-  //   },
-  //   {
-  //     tagName: 'link',
-  //     attributes: {
-  //       rel: 'stylesheet',
-  //       href: 'https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap'
-  //     }
-  //   }
-  // ],
   markdown: {
     mermaid: true,
   },
   themes: ['@docusaurus/theme-mermaid'],
-
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-
     ({
       image: "img/docusaurus-social-card.jpg",
       navbar: {
@@ -85,6 +56,11 @@ const config = {
           srcDark: "img/logo-dark.svg"
         },
         items: [
+          {
+            to: 'docs',
+            label: 'Docs',
+            position: 'left',
+          },
           { 
             to: 'blog', 
             label: 'Blog',
