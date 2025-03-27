@@ -76,12 +76,12 @@ const config = {
       colorMode: {
         disableSwitch: false,
       },
-      announcementBar: {
-        content: '🏗️ Under Construction: Some sections may be missing or incomplete. Feedback can be submitted <a href="https://forms.gle/nHWUt46u58TbmBxu7">here</a>.',
-        backgroundColor: 'var(--bg-color)',
-        textColor: 'var(--text-color)',
-        isCloseable: true,
-      },
+      // announcementBar: {
+      //   content: '🏗️ Under Construction: Some sections may be missing or incomplete. Feedback can be submitted <a href="https://forms.gle/nHWUt46u58TbmBxu7">here</a>.',
+      //   backgroundColor: 'var(--bg-color)',
+      //   textColor: 'var(--text-color)',
+      //   isCloseable: true,
+      // },
       footer: {
         style: "light",
         links: [
