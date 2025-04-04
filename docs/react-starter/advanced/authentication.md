@@ -4,10 +4,15 @@ sidebar_position: 1
 
 # Authentication
 
-CRB affords two forms of Authentication:
+Contensis React Base provides two primary methods for authentication. These methods are:
 
-- Contensis-based
-- Azure-based SSO (WSFED)
+**Contensis-based Authentication**
+
+This method relies on the Contensis platform to handle user authentication, allowing access based on predefined user credentials within the Contensis system.
+
+**Azure-based SSO (WSFED)**
+
+The Azure-based Single Sign-On (SSO) method leverages Microsoft Azure's identity management system through WSFED (Web Services Federation). This allows seamless authentication by integrating with existing Azure Active Directory setups for secure and centralized login.
 
 :::tip
 The latest version of Contensis React Base is recommended whenever configuring a project for any form of authorised routing. 
@@ -153,6 +158,12 @@ You must define this route in your routing configuration and ensure the node and
 ## Azure-based SSO (WSFED)
 
 WS-Federation (WSFED) enables seamless authentication via Azure Active Directory without a custom login page. When a user accesses a protected route, they are redirected to the Azure SSO login portal. Upon successful authentication, they’re sent back to the original route.
+
+:::info
+This assumes your environment has already been configured for Azure SSO.
+
+You can find out more about SSO here: https://www.contensis.com/help-and-docs/guides/managing-users/single-sign-on/overview
+:::
 
 ### Configure environment variables
 
