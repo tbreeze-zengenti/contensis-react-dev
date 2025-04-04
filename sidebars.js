@@ -91,6 +91,11 @@ const sidebars = {
           collapsed: true,
           items: [
             {
+              type: 'doc',
+              label: 'Authentication',
+              id: 'react-starter/advanced/authentication',
+            },
+            {
               type: 'category',
               label: 'Redux',
               items: [
