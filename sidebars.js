@@ -105,6 +105,7 @@ const sidebars = {
                 }
               ]
             },
+            
             {
               type: 'doc',
               label: 'Composer',
