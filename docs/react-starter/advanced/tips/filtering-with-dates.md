@@ -33,7 +33,9 @@ This example demonstrates how to retrieve a list of upcoming events by applying 
 
 In the `event` content type, there is a Contensis date range field named `date`, which includes both a start (`date.from`) and an end date. The `customWhere` condition filters events by comparing the current datetime against the `date.from` value (the event's start date). Events are only included in the search results if their `date.from` is later than the current datetime.
 
+:::info
 When using expression functions like `now()`, the datetime is generated dynamically by the Delivery API at the time of the request. This approach is preferable to using JavaScript date objects within the search configuration, as JavaScript-based dates in this file are only calculated when the server starts, which can lead to outdated or incorrect filtering.
+:::
 
 ## Date-based filters
 
@@ -46,25 +48,25 @@ This example demonstrates how to define a series of date-based filters for vario
     fieldOperator: 'between',
     isSingleSelect: true,
     items: [
-      {
+        {
         title: 'This week',
-        key: 'now()--now(+7d)',
+        key: 'now()--endOfWeek()',
       },
       {
         title: 'Next week',
-        key: 'now(+7d)--now(+14d)',
+        key: 'startOfWeek(+7d)--endOfWeek(+7d)',
       },
       {
         title: 'This month',
-        key: 'now()--now(+31d)',
+        key: 'startOfMonth()--endOfMonth()',
       },
       {
         title: 'Next month',
-        key: 'now(+28d)--now(+62d)',
+        key: 'startOfMonth(+1)--endOfMonth(+1)',
       },
       {
-        title: 'Next 6 months',
-        key: 'now()--now(+186d)',
+        title: 'Next 3 months',
+        key: 'now()--endOfMonth(+3)',
       },
     ],
   },
