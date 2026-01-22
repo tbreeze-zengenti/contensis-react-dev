@@ -4,94 +4,191 @@ sidebar_position: 2
 
 # Site Config Pattern
 
-A Site Config is a common way of defining site-wide settings that are consumed via Redux.
+The **Site Config Pattern** is a standardized method for retrieving entry data in advance of the server-side render, utilizing **Redux** and **Redux Sagas**.
 
-### What is a Site Config used for?
+The “Site Config” refers to a global site configuration entry, typically used for managing data that is required across the entire site, such as header navigation, footer menus, social media links, and other global settings.
 
-A site config is useful for anything that’s going to be used site-wide such as;
+## **What is a Site Config used for?**
 
-- The website’s `<title>` tag
-- Storing a list of social media address
-- Building a Content Type driven nested navigation
+A **Site Config** is useful for any data that is global and needs to be available across all pages of the site. Examples include:
 
-### How is it setup?
+- The website’s `<title>` tag
+- A list of social media links
+- Configuration for the main navigation or footer menus
+- Global settings or metadata that are shared across multiple pages
 
-The Site Config pattern inside the develop branch of React Starter (redux/siteConfig) has everything required to access a Content Type called `siteSettings`. To use it for your project you will have to extend the `siteConfigMapper` to suit your data & create selectors to access that data.
+## **How is it set up?**
 
-### Change the Content Type
+The **React Starter** project includes an implementation of the Site Config pattern as standard. It is located in the siteConfig directory. The pattern consists of the following key components:
 
-To access a Content Type without the ID of `siteSettings` you can amend the value of `ContentTypes.config` in the Schema file.
+1. **Redux Saga**: Handles server-side data fetching for the site configuration entry.
+2. **TypeScript Mapper**: Transforms the raw entry data from the CMS into a format suitable for use in React components.
+3. **Redux Slice**: Manages the state of the site configuration, including loading, error handling, and storing the mapped data.
 
-### How do I access my data?
+Additionally, the `getSiteConfigSaga` is invoked in the `onRouteLoad` function within `withEvents.ts` to ensure the site configuration data is fetched on every route load, if necessary.
 
-The process of accessing data from the Site Config is similiar to the process of mapping data to components.
+## **Key Components of the Site Config Pattern**
 
-As an example here is the shape of the API call returned from Leif’s `siteSettings` content type:
+### 1. **Redux Slice (`siteConfig.slice.ts`)**
 
-```json
-"entryThumbnail": null,
-"linkedinLink": "<https://www.linkedin.com/showcase/contensis>",
-"twitterLink": "<https://twitter.com/contensis?lang=en>",
-"entryDescription": null,
-"logo": {},
-"sys": {},
-"copyrightDate": "2021-01-01T00:00:00",
-"entryTitle": "Leif",
-"facebookLink": "<https://en-gb.facebook.com/>",
-"copyrightName": "Leif"
+The Redux slice is responsible for managing the state of the site configuration. It includes:
 
-```
+- **Initial State**: Defines the default state of the site configuration, including `isLoading`, `isReady`, `isError`, and `mappedEntry`.
+- **Reducers**:
+  - `getSiteConfig`: Sets the `isLoading` flag to `true` when the saga starts fetching the site configuration.
+  - `setSiteConfig`: Updates the state with the mapped site configuration data and sets `isReady` to `true`.
+  - `getSiteConfigError`: Handles errors during the fetching process by setting the `isError` flag and storing the error details.
+- **Selectors**: Provides utility functions to access specific parts of the state, such as `selectSiteConfigReady` and `selectSiteConfigEntry`.
 
-To create an object of Social Media links you could map to these values in the `SiteConfigMapper` like so:
+### Key Considerations:
 
-```jsx
-export const SiteConfigMapper = {
-  title: 'copyrightName',
-	social: {
-		linkedin: 'linkedinLink',
-		twitter: 'twitterLink',
-		facebook: 'facebookLink'
-	},
+- The `initialState` should be updated if new fields are added to the site configuration.
+- When adding new reducers, ensure they align with the existing state structure and are properly tested.
+- Use selectors to access the state in components or other parts of the application.
+
+### 2. **Redux Saga (`sagas.ts`)**
+
+The `getSiteConfigSaga` is the core of the pattern. It handles the asynchronous fetching of the site configuration entry from the CMS using the `contensis-delivery-api`. Key steps include:
+
+- **Checking State**: The saga first checks if the site configuration is already loaded using the `selectSiteConfigReady` selector.
+- **Building the Query**: A `Query` object is created to fetch the site configuration entry. The query uses:
+  - `sys.versionStatus` to fetch the correct version of the entry (e.g., published or preview).
+  - `sys.contentTypeId` to specify the content type of the site configuration entry.
+  - `siteConfigFields` to define the fields to retrieve.
+- **Fetching Data**: The `api.search` method is used to fetch the entry data.
+- **Mapping Data**: The `siteConfigMapper` transforms the raw entry data into a format suitable for the Redux state.
+- **Updating State**: The saga dispatches either `setSiteConfig` (on success) or `getSiteConfigError` (on failure) to update the Redux state.
+
+### Key Considerations:
+
+- If new fields are added to the site configuration, update the `siteConfigFields` array in `fields.schema.ts` to include them.
+- Ensure the `contentTypeId` in the query matches the content type of the site configuration entry in the CMS.
+- Handle errors gracefully by dispatching `getSiteConfigError` with meaningful error messages.
+
+### 3. **TypeScript Mapper (`siteConfig.mapper.ts`)**
+
+The mapper transforms the raw site configuration entry data into a format that is easier to use in React components. For example:
+
+```tsx
+export const siteConfigMapper = (
+  config: ContentTypeSiteConfiguration,
+): SiteConfigMappedProps => {
+  return {
+    title: config.entryTitle,
+  };
 };
-
 ```
 
-With that mapping in place it’s possible to see the App’s state update in Redux Dev Tools.
+### Key Considerations:
 
-To access the Social you’ll need a Selector. These allow you to use hooks provided by Redux to access a portion of your App’s state. In the Site Config selectors file you can create one to access the social object:
+- Update the `SiteConfigMappedProps` type to include any new fields you want to map.
+- Modify the `siteConfigMapper` function to handle the new fields and ensure they are correctly transformed.
 
-```jsx
-export const selectSocial = (state: any) => {
-  return state.siteConfig.config?.social;
-};
+### 4. **Route Integration (`withEvents.ts`)**
 
+The `getSiteConfigSaga` is invoked in the `onRouteLoad` function within `withEvents.ts`. This ensures that the site configuration is fetched on every route load, if necessary.
+
+```tsx
+yield all([call(getSiteConfigSaga, ssr)]);
 ```
 
-The return simply drills down through the state object, which is everything we can see in Redux Dev Tools.
+### Key Considerations:
 
-Now that you have a Selector set up you can call the `useSelector` hook. This hooks calls the data for us to work with like any other element in React.
+- Ensure the `getSiteConfigSaga` is included in the `onRouteLoad` function to fetch the site configuration during server-side rendering.
+- If additional global data needs to be fetched on route load, include the corresponding sagas in the `all` array.
 
-As an example here’s a simple component that renders a link for every value inside of the Social object:
+## **How to Update the Site Config Pattern**
 
-```jsx
+If you need to update or extend the Site Config pattern, follow these steps:
 
-import React from 'react';
+1. **Add New Fields to the Site Configuration**:
+   - Update the `siteConfigFields` array in `fields.schema.ts` to include the new fields you want to fetch from the CMS.
+2. **Update the Mapper**:
+   - Modify the `siteConfig.mapper.ts` file to map the new fields from the CMS entry to the `SiteConfigMappedProps` type.
+   - Update the `SiteConfigMappedProps` type to include the new fields.
+3. **Update the Redux Slice**:
+   - If necessary, update the `SiteConfigState` type in `siteConfig.slice.ts` to include new state properties.
+   - Add new reducers if additional state management logic is required.
+4. **Update the Saga**:
+   - Modify the `getSiteConfigSaga` in `sagas.ts` to handle any changes to the query or additional logic for fetching the new fields.
 
-import { useSelector } from 'react-redux';
-import { selectSocial } from '~/redux/siteConfig/selectors';
+By following these steps, you can effectively update and extend the Site Config pattern to meet the evolving needs of your application. This pattern ensures that global data is consistently and efficiently managed across your React application.
 
-const SocialList = ({}) => {
-	const social = useSelector(selectSocial);
-	return (
-		<>
-			<a href={social.linkedin}>LinkedIn Profile</a>
-			<a href={social.twitter}>Twitter Handle</a>
-			<a href={social.facebook}>Facebook Page</a>
-		</>
-	)
+## **Accessing Data Using Redux Selectors**
+
+Once the Site Config data is stored in Redux, you can access it using **Selectors**, which extract specific data from the state.
+
+### Example: Accessing Social Media Links
+
+Here’s a sample API response from the `siteSettings` content type:
+
+```tsx
+{
+  "linkedinLink": "https://www.linkedin.com/showcase/contensis",
+  "twitterLink": "https://twitter.com/contensis?lang=en",
+  "facebookLink": "https://en-gb.facebook.com/",
+  "entryTitle": "Leif",
+  "copyrightName": "Leif"
 }
 ```
 
-:::note
-All of the steps above are reference the Leif CMS project, which is the default CMS that React Starter is connected to, so you can follow them to see how they work.
-:::
+Using the **Site Config Mapper**, you can transform this data into a structured format:
+
+```tsx
+export const siteConfigMapper = (config: ContentTypeSiteConfiguration) => ({
+  title: config.entryTitle,
+  social: {
+    linkedin: config.linkedinLink,
+    twitter: config.twitterLink,
+    facebook: config.facebookLink,
+  },
+});
+```
+
+To access the `social` object, create a selector:
+
+```tsx
+export const selectSocial = (state: ReduxState) =>
+  state.siteConfig.mappedEntry?.social;
+```
+
+### Using the Selector in a Component
+
+With the selector in place, use the `useSelector` hook to access the `social` object in a React component:
+
+```tsx
+import React from "react";
+import { useSelector } from "react-redux";
+import { selectSocial } from "~/redux/siteConfig/siteConfig.slice";
+
+const SocialList = () => {
+  const social = useSelector(selectSocial);
+
+  if (!social) return null;
+
+  return (
+    <div>
+      <a href={social.linkedin} target="_blank" rel="noopener noreferrer">
+        LinkedIn
+      </a>
+      <a href={social.twitter} target="_blank" rel="noopener noreferrer">
+        Twitter
+      </a>
+      <a href={social.facebook} target="_blank" rel="noopener noreferrer">
+        Facebook
+      </a>
+    </div>
+  );
+};
+
+export default SocialList;
+```
+
+### Key Steps to Add New Data
+
+1. **Update the CMS Content Type**: Add new fields in the CMS.
+2. **Update `siteConfigFields`**: Add the new fields in `fields.schema.ts`.
+3. **Update the Mapper**: Modify `siteConfig.mapper.ts` to map the new fields.
+4. **Update the Redux State**: Update `siteConfig.slice.ts` if new state properties are needed.
+5. **Create a Selector**: Add a selector to access the new data.
+6. **Use the Selector**: Use `useSelector` in your components to access and render the data.
