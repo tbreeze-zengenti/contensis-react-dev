@@ -149,7 +149,6 @@ For every component we’ll need to import it via the `dynamic/composer`.
 
 ```jsx title="The Composer component controls which component renders"
 import React from 'react';
-import uniqueID from '~/core/util/unique';
 
 import { Markup } from '~/dynamic/composer';
 
@@ -160,19 +159,15 @@ const Composer = ({ items }: ComposerProps) => {
 
   return (
     <>
-      {items.map((props: ComposerItemProps) => {
+      {items.map((props: ComposerItemProps, index: number) => {
         if (!props._type) return null;
-				switch (props._type) {
+        switch (props._type) {
           case 'richText':
-            return <Markup key={id()} {...props} />;
+            return <Markup key={`composer-${index}-${props._type}`} {...props} />;
 
           default:
-            console.error(
-              'Composer Component ',
-              (props as any)._type,
-              ' not found'
-            );
-            break;
+            console.error('Composer Component ', props._type, ' not found');
+            return null;
         }
       })}
     </>
@@ -181,6 +176,10 @@ const Composer = ({ items }: ComposerProps) => {
 
 export default Composer;
 ```
+
+:::tip
+Keys are generated using the item's index and `_type` (e.g. `composer-0-richText`). Contensis does not provide unique IDs for Composer fields, so index-based keys are the recommended approach. Avoid random keys as they cause unnecessary re-renders.
+:::
 
 #### Mapping
 

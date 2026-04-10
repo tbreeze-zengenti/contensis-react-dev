@@ -5,11 +5,17 @@ sidebar_position: 1
 
 # Overview
 
-:::caution
-This page is under construction. Some sections may be incomplete or missing.
-:::
-
 Contensis React Base provides a wrapper for working with Contensis's Elastic search implementation. The Starter Project offers a boilerplate approach to configuring this implementation, whilst CRB also provides a variety of Hooks for rendering and interacting with the results.
+
+## Architecture
+
+Search in React Starter is built on three layers that work together:
+
+1. **Config** — defines what to search for (content types, facets, listings, minilists) via `search.config.ts`
+2. **Mappers** — transform raw Delivery API results into the shape your components need
+3. **Hooks** — provided by Contensis React Base (`useFacets`, `useListing`, `useMinilist`) for connecting React components to search state
+
+The search config is loaded at route change time via `withEvents` (`onRouteLoaded`). The hooks read from Redux state and handle pagination, filtering, and navigation automatically.
 
 ## Config
 

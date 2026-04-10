@@ -37,3 +37,26 @@ It’s readable because the types allow the code to be self-expressive, providin
 A benefit of TypeScript is that it allows us to leverage Intelligent Code Completion (ICC).
 
 ICC (better known as Intellisense in VS Code) will provide prompts based on the types to help you select the correct values & functions.
+
+## Path Aliases
+
+React Starter configures two TypeScript path aliases in `tsconfig.json` to avoid long relative import paths:
+
+| Alias | Resolves to | Use for |
+|-------|------------|---------|
+| `~/*` | `./src/app/*` | App-layer imports (components, hooks, redux, etc.) |
+| `-/*` | `./` | Root-level imports (config files, webpack helpers, etc.) |
+
+**Before** (relative path):
+
+```tsx
+import Meta from '../../../components/meta/meta.component';
+```
+
+**After** (using alias):
+
+```tsx
+import Meta from '~/components/meta/meta.component';
+```
+
+The `~` alias covers everything under `src/app/`, which is where the vast majority of imports will point. The `-` alias is rarely needed in day-to-day development but is useful when importing from the project root (e.g. `tsconfig.json` paths or root-level utilities).

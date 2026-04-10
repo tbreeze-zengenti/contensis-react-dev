@@ -8,7 +8,7 @@ React Starter is a starter project built upon Zengenti's Contensis React Base fr
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/en) version 18.0 or above (which can be checked by running node -v)
+- [Node.js](https://nodejs.org/en) version 20 or above (as specified in `.nvmrc`) — which can be checked by running `node -v`
 
 We recommend using [nvm](https://github.com/nvm-sh/nvm) for managing multiple versions of Node.
 

@@ -10,7 +10,7 @@ Pages are simply React functional components that layout smaller components.
 
 ``` src/app/components/pages/newsArticle.page.tsx
 import React from 'react';
-import MainLayout from '~/pages/mainLayout/mainLayout.template';
+import MainLayout from '~/templates/main/main.template';
 
 const NewsArticle = () => {
     return (
@@ -27,7 +27,7 @@ export default NewsArticle;
 
 ## File structure
 
-Pages reside within the `src/app/pages` directory.
+Pages reside within the `src/app/templates` directory.
 For consistency, it's recommended to name component files using the following
 convention: `{componentName}.page.tsx`
 
