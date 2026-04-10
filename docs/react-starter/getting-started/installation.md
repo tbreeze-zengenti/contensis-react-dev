@@ -65,3 +65,30 @@ To begin developing locally you'll need to familiarise yourself with these comma
 - `npm run build:server` - build the application and start the server-side application from source code (allowing us to connect a debugger and stop on code that is executed server-side) (http://localhost:3001/)
 
 ## Project structure
+
+After installation, the project is organised as follows:
+
+```
+my-project/
+├── src/
+│   ├── app/                        # All application code
+│   │   ├── components/             # Reusable React components
+│   │   ├── templates/              # Page-level template components
+│   │   ├── routes/                 # Route definitions (static + content-type)
+│   │   ├── redux/                  # Custom Redux slices, selectors, sagas
+│   │   ├── search/                 # Search config, mappers, and minilist hooks
+│   │   ├── schema/                 # Constants: content type IDs, field lists, search keys
+│   │   ├── theme/                  # Styled Components theme (colours, spacing, breakpoints)
+│   │   ├── types/                  # Global TypeScript type definitions
+│   │   └── util/                   # Utility functions and custom hooks
+│   ├── server/                     # Express SSR server entry point
+│   └── client/                     # Browser client entry point
+├── public/                         # Static assets served as-is (favicons, fonts, images)
+├── webpack/                        # Webpack configuration
+├── docker/                         # Docker configuration for Contensis Blocks deployment
+├── .env                            # Environment variables (not committed)
+├── .nvmrc                          # Node.js version pin
+└── package.json
+```
+
+Most day-to-day development happens inside `src/app/`. Each subdirectory has a dedicated section in these docs — see the sidebar for guides on components, routing, search, and more.

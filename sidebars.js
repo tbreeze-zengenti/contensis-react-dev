@@ -71,7 +71,17 @@ const sidebars = {
                   dirName: 'react-starter/search/hooks',
                 },
               ],
-            }
+            },
+            {
+              type: 'doc',
+              label: 'Filters',
+              id: 'react-starter/search/filters'
+            },
+            {
+              type: 'doc',
+              label: 'Advanced',
+              id: 'react-starter/search/advanced'
+            },
 
           ]
         },

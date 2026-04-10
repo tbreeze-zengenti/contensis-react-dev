@@ -5,85 +5,150 @@ sidebar_position: 3
 
 # Mappers
 
-You can supply an object called `mappers` to the search saga and React components or hooks. This object must contain the following keys, with a function beneath each key.
+Search mappers transform raw Contensis data into the shape your components and hooks need. There are three mapper slots, all registered in a single `search.transformations.ts` file.
 
-| Name        | Type     | Arguments                                    | Description                                                                                                                                                                                                                                                                     |
-| ----------- | -------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| filterItems | function | (items[])                                    | When loading filter items dynamically, the search state expects a filter item to be presented in the format of { title, key, path, isSelected }. This function can be used to iterate over the returned items and map them to the expected format                               |
-| navigate    | function | ({ state, facet, orderBy, pageIndex, term }) | When applying a search action we will usually navigate to a new route that reflects the user's choices from actions performed, this can be used to apply specific routing logic and must return an object of { path, search, hash } which will form the next url                |
-| results     | function | (items, facet, context)                      | A function to take a list of items from our raw API response and return a list of results that represent component props ready to render out in a results list (see `mapEntriesToResults` example below for an example)                                                         |
-| resultsInfo | function | (state)                                      | Produce a keyed object containing any props that you require to summarise your search results. Each key can be produced by using exposed redux selectors, or your own Immutable selectors, or a composite containing logic and results from different areas of the search state |
+## The `SearchTransformations` object
 
-This can be easily summarised in an `index.ts` file inside your feature's `transformations` folder
-
-```
-import mapEntriesToResults from './entry-to-cardprops.mapper';
-import mapEntriesToFilterItems from './entry-to-filteritem.mapper';
-import mapStateToResultsInformation from './state-to-resultsinformationprops.mapper';
-import mapStateToSearchUri from './state-to-searchuri';
+```typescript title="src/app/search/search.transformations.ts"
+import type { SearchTransformations } from '@zengenti/contensis-react-base/models/search';
+import searchResultsMapper from '~/search/searchResults.mapper';
+import searchResultsInformationMapper from '~/search/searchResultsInformation.mapper';
 
 export default {
-  filterItems: mapEntriesToFilterItems,
-  navigate: mapStateToSearchUri,
-  results: mapEntriesToResults,
-  resultsInfo: mapStateToResultsInformation,
-};
+  results: searchResultsMapper,               // Entry[] → T[]
+  resultsInfo: searchResultsInformationMapper, // AppState → { resultsText, noResultsText, ...custom }
+} as SearchTransformations;
 ```
 
-To avoid all of the customisation potential, as a bare minimum `mappers` must be supplied as a single function that accepts an array of `entry[]` that returns a list of mapped results.
+A third slot — `filterItems` — is only needed when using dynamic filters that load items from the CMS (see [Dynamic filter items](#dynamic-filter-items) below).
 
+:::caution
+There is exactly **one** `search.transformations.ts` file. Do not create `blogSearch.transformations.ts`, `plantSearch.transformations.ts`, etc. All result mappers are registered in `searchResults.mapper.ts` via a switch on `entry.sys.contentTypeId`.
+:::
 
-## mapEntriesToResults
+## `searchResults.mapper.ts`
 
-A mapper function which will take the raw entry items array returned from the API response and will map each entry, based on their ContentTypeID, to a discrete result object - which should represent component props - so the data inside each entry is normalised and ready for use without further remapping or destructuring inside our components.
+This mapper receives raw CMS entries and returns typed component props. It uses a `switch` on `entry.sys.contentTypeId` to apply the right mapping per content type.
 
-Essentially each entry gets mapped to a result card and is available in the facet state as `Result[]`.
+### When `baseMapper` is enough
 
-```ts title="An example mapper applied to a Content Type ID of 'news'"
-const newsMapper = {
-    title: 'entryTitle',
-    image: 'entryThumbnail',
+The Contensis Delivery API automatically resolves `entryTitle`, `entryDescription`, and `entryThumbnail` based on each content type's `entryTitleField`, `entryDescriptionField`, and `entryThumbnailField` settings in the CMS. This means `baseMapper` returns the correct title, description, and thumbnail for every content type — regardless of whether the underlying CMS field is named `productName` or `heading`.
+
+**Only write a custom mapper if you need to expose additional fields** (e.g. a rating, a price, a kicker) beyond `{ id, title, uri, description, thumbnail }`.
+
+### Adding a content-type-specific mapper
+
+```typescript title="src/app/search/searchResults.mapper.ts"
+import type { ContentTypeBlogPost } from '~/types/contentTypes/blogPost.type';
+import type { Image } from 'contensis-delivery-api';
+
+// 1. Result props type for this content type
+export type BlogSearchResultProps = ResultProps<{
+  title: string;
+  uri?: string;
+  kicker?: string;
+  thumbnailImage?: Image;
+  categoryTitle?: string;
+}>;
+
+// 2. Mapper function
+const blogMapper = (entry: ContentTypeBlogPost): BlogSearchResultProps => ({
+  id: entry.sys.id,
+  uri: entry.sys.uri ?? undefined,
+  title: entry.title,
+  kicker: entry.kicker,
+  thumbnailImage: entry.thumbnailImage,
+  categoryTitle: entry.category?.entryTitle,
+});
+
+// 3. Switch — list every content type in contentTypeIds explicitly
+switch (entry.sys.contentTypeId) {
+  case contentTypes.blogPost:
+    return blogMapper(entry as ContentTypeBlogPost);
+  default:
+    return baseMapper(entry); // intentional fallback
 }
 
-export const mappers = {
-    news: newsMapper,
+// 4. Update the SearchResultProps union
+export type SearchResultProps = BaseSearchResultProps | BlogSearchResultProps;
+```
+
+Add any extra fields to the corresponding config:
+
+```typescript title="src/app/search/search.config.ts"
+fields: [...baseFields, 'title', 'kicker', 'thumbnailImage', 'category'],
+fieldLinkDepths: { category: 1 },
+```
+
+### Mapper receives facet context
+
+The mapper signature includes optional `facet` and `context` parameters for context-aware mapping:
+
+```typescript
+const searchResultsMapper: SearchResultsMapper<SearchResultProps> = (
+  entries,
+  facet,   // e.g. 'plants', 'news' — current facet key
+  context, // 'facets' | 'listings' | 'minilist'
+) => {
+  return entries.map(entry => {
+    if (context === 'minilist') return compactMapper(entry);
+    return baseMapper(entry);
+  });
 };
 ```
 
-### mapStateToResultsInformation
+## `searchResultsInformation.mapper.ts`
 
-This is just an example of how this mapper could be used. Its intended use is to keep summary and pagination logic away from your View layer.
+This mapper receives the full Redux state and returns summary text and any extra keys you want available via `resultsInfo` in the hooks:
 
-```
+```typescript title="src/app/search/searchResultsInformation.mapper.ts"
 import { selectors } from '@zengenti/contensis-react-base/search';
-import { fromJS } from 'immutable';
 
-import { default as mapJson } from '~/core/util/json-mapper';
+const { getPaging, getTotalCount, getIsLoaded } = selectors.selectFacets;
 
-const {
-  getCurrent,
-  getListing,
-  getResults,
-  getSearchTerm,
-  getTotalCount,
-} = selectors.selectListing;
+export default (state: AppState) => {
+  const totalCount = getTotalCount(state) ?? 0;
+  const paging = getPaging(state);
+  const isLoaded = getIsLoaded(state) ?? false;
+  const start = (paging?.pageIndex ?? 0) * (paging?.pageSize ?? 10) + 1;
+  const end = Math.min(start + (paging?.pageSize ?? 10) - 1, totalCount);
 
-const listingTitle = state => getListing(state).get('title');
-const searchTerm = state => getSearchTerm(state);
-const totalCount = state => getTotalCount(state);
-
-const searchSummaryTemplate = {
-  currentListing: state => getCurrent(state),
-  currentPageCount: state => getResults(state).size,
-  listingTitle,
-  noResultsText: state =>
-    totalCount(state) === 0 ? `No results were found` : '',
-  searchTerm,
-  totalCount,
+  return {
+    resultsText: totalCount > 0 ? `Showing ${start}–${end} of ${totalCount} results` : '',
+    noResultsText: isLoaded && totalCount === 0 ? 'No results found.' : '',
+    // Extra keys are accessible as resultsInfo.totalCount etc. in the hook
+    totalCount,
+    isLoaded,
+  };
 };
-
-const mapStateToResultsInformation = state =>
-  fromJS(mapJson(state, searchSummaryTemplate)).toJS();
-
-export default mapStateToResultsInformation;
 ```
+
+## Dynamic filter items
+
+When a `SearchFilter` uses `contentTypeId` to load filter items from the CMS at runtime, add a `filterItems` mapper to `search.transformations.ts`:
+
+```typescript title="src/app/search/searchFilterItems.mapper.ts"
+import type { FilterItemsMapper } from '@zengenti/contensis-react-base/search';
+
+const filterItemsMapper: FilterItemsMapper = (entries) =>
+  entries.map(entry => ({
+    key: entry.sys.id,    // used in the API query
+    title: entry.entryTitle, // shown in the filter UI
+  }));
+
+export default filterItemsMapper;
+```
+
+Register it in `search.transformations.ts`:
+
+```typescript title="src/app/search/search.transformations.ts"
+import filterItemsMapper from '~/search/searchFilterItems.mapper';
+
+export default {
+  results: searchResultsMapper,
+  resultsInfo: searchResultsInformationMapper,
+  filterItems: filterItemsMapper, // only needed for dynamic CMS-loaded filter items
+} as SearchTransformations;
+```
+
+You only need this when a filter config uses `contentTypeId: someType` and `items: []` — without it, dynamic filter items will not be mapped to the expected `{ key, title }` shape.

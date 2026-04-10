@@ -16,26 +16,92 @@ This starts Storybook at [http://localhost:6006](http://localhost:6006).
 
 ## Writing stories
 
-Story files live alongside their components and follow the `*.stories.tsx` naming convention. Example:
+Story files live alongside their components and follow the `*.stories.tsx` naming convention.
 
-```tsx title="src/app/components/button/button.stories.tsx"
+### Story organisation
+
+Use the `title` property to group stories in the sidebar. The convention is `Category / Subcategory / ComponentName`:
+
+```tsx title="src/app/components/blogCard/blogCard.stories.tsx"
 import type { Meta, StoryObj } from '@storybook/react';
-import Button from './button.component';
+import BlogCard from './blogCard.component';
 
-const meta: Meta<typeof Button> = {
-  component: Button,
-};
-export default meta;
-
-type Story = StoryObj<typeof Button>;
-
-export const Primary: Story = {
+const meta: Meta<typeof BlogCard> = {
+  title: 'Components / Cards / BlogCard',
+  component: BlogCard,
   args: {
-    label: 'Click me',
-    variant: 'primary',
+    title: 'Getting started with React Starter',
+    description: 'A quick guide to the project structure and conventions.',
+    imageUrl: '/images/placeholder.jpg',
+  },
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['default', 'featured', 'compact'],
+    },
+    isLoading: {
+      control: 'boolean',
+    },
+  },
+};
+
+export default meta;
+type Story = StoryObj<typeof BlogCard>;
+
+// Default story — uses the args defined in meta
+export const Default: Story = {};
+
+// Override specific args per story
+export const Featured: Story = {
+  args: {
+    variant: 'featured',
+  },
+};
+
+export const Compact: Story = {
+  args: {
+    variant: 'compact',
   },
 };
 ```
+
+### `args` and `argTypes`
+
+- **`args`** — default prop values applied to every story in the file. Individual stories can override any arg.
+- **`argTypes`** — configure the Storybook Controls panel for each prop:
+
+| Control type | Config |
+|---|---|
+| Dropdown select | `control: 'select', options: [...]` |
+| Toggle | `control: 'boolean'` |
+| Colour picker | `control: 'color'` |
+| Number range | `control: { type: 'range', min: 0, max: 100 }` |
+| Hidden from controls | `table: { disable: true }` |
+
+### ThemeProvider decorator
+
+Components that use Styled Components theme tokens need a `ThemeProvider` in stories. Add it as a decorator in `.storybook/preview.tsx` to apply it globally, or per-story:
+
+```tsx title="src/app/components/card/card.stories.tsx"
+import { ThemeProvider } from 'styled-components';
+import { theme } from '~/theme';
+
+const meta: Meta<typeof Card> = {
+  title: 'Components / Card',
+  component: Card,
+  decorators: [
+    (Story) => (
+      <ThemeProvider theme={theme}>
+        <Story />
+      </ThemeProvider>
+    ),
+  ],
+};
+```
+
+:::tip
+The global `preview.tsx` already wraps stories with a `ThemeProvider` in the boilerplate — you only need a per-story decorator if a story needs a different theme variant.
+:::
 
 ## Storybook configuration
 

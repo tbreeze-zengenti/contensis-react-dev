@@ -2,174 +2,161 @@
 sidebar_position: 3
 ---
 
-
 # useMinilist
 
-The Minilist is a feature of the Search package which allows us to return a selection of search results within a component or page.
+`useMinilist` lets you embed a self-contained results list anywhere on a page — without a dedicated search route. Common use cases:
 
+- A "Related Articles" section at the bottom of a blog post
+- A homepage "Latest Posts" widget
+- Any embedded results list that doesn't need URL-bound state
 
-## When to use useMinilist?
+## Why the `selectSearchExists` guard is required
 
-Since Minilists are designed to return small selections of data they are perfect for:
+CRB's search Redux state is **dynamically injected** the first time a search route loads. On pages with no search route (a plain content page, a homepage), the search slice is `undefined`.
 
-- Displaying a selection of Cards on a Homepage
-- Returning a list of related Entries at the end of an entry
-- Fetching data from an external API
+Calling `useMinilist` before the state exists throws a runtime error. The guard — `useSelector(selectSearchExists)` — waits until CRB has injected the state before initialising the minilist.
 
-## How to use useMinilist
+**Never call `useMinilist` directly in a component.** Always wrap it in the hook file pattern below.
 
-To get started with a Minilist you’ll need a Content Type in your CMS Project that you wish to fetch. For demonstration purposes we'll be returning `blogPost` to create a Minilist that renders 3 blog posts. 
+## Step-by-step
 
-### Query
+### 1. Register the key in `search.schema.ts`
 
-Next you'll need to define your query inside `search.config.ts`. Inside the query you'll need to define the `contentTypeID` you wish to fetch along with a few other parameters.
+```typescript title="src/app/schema/search.schema.ts"
+export const minilists = {
+  all: 'all',
+  relatedArticles: 'relatedArticles', // add here
+};
+```
 
-```ts title="A query object for a minilist"
+### 2. Add config in `search.config.ts`
+
+```typescript title="src/app/search/search.config.ts"
 minilist: {
-    blogs: { // Reference to our Schema Minilists object
-      title: 'Related Blogs', // A title for our Listing
-      queryParams: { // QueryParams allow us to build a query
-        contentTypeIds: ['blogPost'], // Reference to the ContentTypeID we want to fetch
-        fields: ['entryTitle'], // An array of Fields we want to return from BlogPost
-        pageSize: 3, // The number of entries to return
-        orderBy: ['entryTitle'] // The order we want our entries to return in
-      },
+  [minilists.relatedArticles]: {
+    title: 'Related Articles',
+    queryParams: {
+      contentTypeIds: [contentTypes.blogPost],
+      fields: [...baseFields],
+      pageSize: 5,
+      customWhere: [whereSysUri], // always include
     },
-  } as { [key: string]: Listing },
-```
-
-### Mapper
-
-Our hook will require a mapper to map the queried data to the relevant component props. We can define a mapper for `blogPost` Content Type's in `entry-to-cardprops.mapper.ts`. This is a special mapper that allows us to define mappings for Content Types that are queried by Search.
-
-Once the fields are defined the export `mappers` object must contain a `key` that refers to the `contentTypeId`, in this instance that key is `blogPost`.
-
-```ts title="Adding 'blogPost' mappings to our Search mapper (entry-to-cardprops.mapper.ts)"
-const blogPostMapping = { 
-    title: 'entryTitle',
-    description: 'entryDescription',
-    image: 'image.asset.sys.uri',
-    id: 'sys.id',
-};
-
-export const mappers = {
-    blogPost: blogPostMapping,
-};
-```
-
-### Loading Search
-
-For performance reasons we do **not** load Search state on any route. To load Search state we need to inject it to the required route.
-
-To do this you simply need to `injectRedux` to any route your Minilist will exist on & import the `injectSearch` utility included in the project. This will enable Search state on the desired routes.
-
-For this example we're going to add it to our `blogPost` Content Type routing so that we can render a Minilist on every blog post.
-
-```ts title="Injecting Search state to a variety of Route types"
-// ContentTypeMappings example
-const contentTypeMappings: ContentTypeMapping[] = [
-  {
-    contentTypeID: ContentTypes.blogPost,
-    component: BlogPost,
-    injectRedux: injectSearch,
   },
-];
-
-// Static Route example
-{
-    path: '/a-specificly-named-blog-post-for-some-reason',
-    component: BlogPost,
-    injectRedux: injectSearch,
 },
 ```
 
-### Rendering
+### 3. Create the hook file
 
-The `useMinilist` hook is executed client-side so there's a few steps to jump through to get it working.
+```typescript title="src/app/search/minilists/relatedArticles.minilist.ts"
+import { useEffect, useState } from 'react';
+import { useMinilist } from '@zengenti/contensis-react-base/search';
+import type { UseMinilistProps } from '@zengenti/contensis-react-base/search';
+import { useSelector } from 'react-redux';
+import { minilists } from '~/schema/search.schema';
+import searchTransformations from '~/search/search.transformations';
+import type { SearchResultProps } from '~/search/searchResults.mapper';
+import { selectSearchExists } from '~/redux/selectors';
 
-**Steps need adding - full example for the time being**
-
-```tsx title="Example of useMinilist"
-import React, { useState, useEffect } from 'react';
-import {
-    useMinilist,
-    UseMinilistProps,
-} from '@zengenti/contensis-react-base/search';
-
-import mappers from '~/search/transformations';
-
-import ResultCard from '~/components/resultCard/resultCard';
-import { ResultCardProps } from '~/components/resultCard/resultCard.types';
-
-const minilistInitState = {
+const minilistInitState: UseMinilistProps = {
   id: '',
-  mapper: (e: any = []) => e,
-} as UseMinilistProps;
+  mapper: searchTransformations.results,
+};
 
-const BlogPage = () => {
-    // We use state to store our Minilist query/data
-    const [blogsMinilist, setBlogsMinilist] =
-    useState(minilistInitState);
+export default () => {
+  const isSearchSetup = useSelector(selectSearchExists);
+  const [minilistOptions, setMinilistOptions] = useState(minilistInitState);
 
-useEffect(() => {
-    // We can use a setTimeout to allow the async search bundles to
-    // fully register before triggering a minilist in a static route
-    setTimeout(() => {
-        setBlogsMinilist({
-            id: 'blogs', // The ID is the `key` of your Search Config object
-            mapper: mappers.results,
-        });
-    }, 500);
-}, []);
+  useEffect(() => {
+    // Search Redux is dynamically injected — wait until it is ready
+    if (!isSearchSetup) return;
+    setMinilistOptions({
+      id: minilists.relatedArticles,
+      mappers: searchTransformations,
+    });
+  }, [isSearchSetup]);
 
-// We destructure the props from `useMinilist` that we need
-// and pass `blogsMinilist` to the hook to access them
-const { results, title } =
-useMinilist<ResultCardProps>(blogsMinilist);
+  return useMinilist<SearchResultProps>(minilistOptions);
+};
+```
 
-return (
-    <div>
-        <h2>{title}</h2>
-        {/* When rendering we can simply spread our result since the mapper 
-            we created is mapping the search data to our component's props.
-            It is important however to provide a unique key for React,
-            so we specifiy that our `key` is the result's `id` prop.
-        */} 
-        {results.map(result => (
-            <ResultCard key={result.id} {...result} />
+### 4. Use the hook in any component
+
+```tsx title="src/app/components/relatedArticles/relatedArticles.component.tsx"
+import useRelatedArticles from '~/search/minilists/relatedArticles.minilist';
+
+const RelatedArticles = () => {
+  const { results, isLoading } = useRelatedArticles();
+
+  if (isLoading) return <p>Loading...</p>;
+  if (!results.length) return null;
+
+  return (
+    <section>
+      <h2>Related Articles</h2>
+      <ul>
+        {results.map(item => (
+          <li key={item.id}>
+            <a href={item.uri}>{item.title}</a>
+          </li>
         ))}
-    </div>
-);
-}
-
-export default BlogPage;
+      </ul>
+    </section>
+  );
+};
 ```
 
-## Extras
+## Prop API
 
-### Replacing setTimeout
+Props returned by `useMinilist<T>(options)`:
 
-Using `setTimeout` to ensure our Search state is available is fine in development but not so good in production. The best method for checking if the Search state is ready is Redux itself. We can use a selector to check if Search state exists, if it does it's safe to execute our `useEffect`.
+| Prop | Type | Description |
+|------|------|-------------|
+| `results` | `T[]` | Mapped result items |
+| `isLoading` | `boolean` | `true` while fetching |
+| `resultsInfo` | `object` | `{ resultsText, noResultsText, ...custom }` |
+| `paging` | `Paging` | `{ pageCount, pageIndex, pageSize, totalCount }` |
+| `title` | `string` | Minilist title from config |
+| `sortOrder` | `string[]` | Current sort expressions |
+| `selectedFilters` | `object` | Selected filter state |
+| `updatePageIndex` | `(index: number) => void` | Navigate to a page |
+| `updatePageSize` | `(size: number) => void` | Change page size |
+| `updateSelectedFilters` | `(groupKey, itemKey) => void` | Toggle a filter |
+| `updateSortOrder` | `(orderBy: string[]) => void` | Change sort |
 
-```ts title="A boolean selector for querying Search state"
-export const selectIsSearchLoaded = (state: any): boolean =>
-    state.search != null && state.search != undefined;
-```
+**Not available in `useMinilist`:** `updateSearchTerm`, `clearFilters`, `updateCurrentFacet`, `updateCurrentTab`.
 
-We can then replace `setTimeout` and conditionally check if our Search state is present. Adding `isSearchLoaded` as the `useEffect`'s depdendency means that when it is ready our `useEffect` will trigger.
+## Advanced options
 
-```tsx title="Replacing setTimeout with a selector"
+### Excluding the current page entry
 
-// Will return true or false
-const isSearchLoaded = useSelector(selectIsSearchLoaded);
+Pass `excludeIds` to prevent the current page's own entry appearing in the results:
 
+```typescript
 useEffect(() => {
-    if (isSearchLoaded) {
-        setBlogsMinilist({
-            id: 'blogs', 
-            mapper: mappers.results,
-        });
-    }
-}, [isSearchLoaded]);
-
+  if (!isSearchSetup || !currentEntryId) return;
+  setMinilistOptions({
+    id: minilists.relatedArticles,
+    mappers: searchTransformations,
+    excludeIds: [currentEntryId],
+  });
+}, [isSearchSetup, currentEntryId]);
 ```
+
+### Syncing with the main search term
+
+Set `queryParams.useSearchTerm: true` in the minilist config to have the minilist respond to the same free-text term as the main search facet on the page:
+
+```typescript title="src/app/search/search.config.ts"
+minilist: {
+  [minilists.relatedArticles]: {
+    queryParams: {
+      contentTypeIds: [contentTypes.blogPost],
+      fields: [...baseFields],
+      customWhere: [whereSysUri],
+      useSearchTerm: true, // minilist mirrors the main search term
+    },
+  },
+},
+```
+
+When `useSearchTerm: true`, the hook also returns `searchTerm: string`.

@@ -3,15 +3,11 @@ title: Config
 sidebar_position: 2
 ---
 
-# Overview
+# Config
 
-:::caution
-This page is under construction. Some sections may be incomplete or missing.
-:::
+`src/app/search/search.config.ts` defines all facets, listings, and minilists. Each entry declares what to search for, which fields to return, and how results should be filtered and sorted.
 
-The Search Config (`/search.config.ts`) is an object-like interface for defining search parameters. The `facets`, `listings`, and `minilist` objects provide the configurations for their respective hooks; `useFacets`, `useListing`, and `useMinilist`.
-
-Every search object follows the same pattern and full TypeScript support is available.
+Keys must always be defined as constants in `src/app/schema/search.schema.ts` before being referenced here — never use string literals directly.
 
 
 ## Search Config
@@ -111,3 +107,128 @@ N.B. This shares syntax with adding where operators to a search query when using
 | title      | string |          | The title to render next to the filter item              |
 | path       | string | optional | This will usually be the entry slug or the taxonomy path |
 | isSelected | bool   | optional | Whether the filter is in a selected state                |
+
+## Additional `QueryParams` fields
+
+The following fields are available on `queryParams` in addition to those in the table above:
+
+| Property | Type | Default | Notes |
+|----------|------|---------|-------|
+| `fieldLinkDepths` | `{ [field: string]: number }` | — | Resolve links only on named fields. Preferred over raising global `linkDepth`. Must be used instead of `linkDepth` when the baseline is already `2` or higher. |
+| `fuzzySearch` | `boolean` | `false` | Enable fuzzy matching on free-text queries. Useful for typo tolerance. |
+| `versionStatus` | `'latest' \| 'published'` | env default | Override the version filter per facet. Use `'latest'` on staging, `'published'` on production. |
+| `languages` | `string[]` | — | Restrict results to these language codes. E.g. `['en-GB']`. |
+| `omitDefaultSearchFields` | `string[]` | — | Remove specific fields from the default weighted search set. |
+| `internalPaging` | `boolean` | `false` | Fetch all results at once and paginate entirely in the browser. |
+
+### `fieldLinkDepths` vs `linkDepth`
+
+Prefer `fieldLinkDepths` over raising the global `linkDepth`. It resolves linked entries only on the specific fields your mapper needs, avoiding over-fetching:
+
+```typescript
+// ✅ Preferred — resolve only what the mapper uses
+queryParams: {
+  fields: [...baseFields, 'author', 'category'],
+  linkDepth: 0,
+  fieldLinkDepths: {
+    author: 1,    // resolve the linked author entry
+    category: 1,  // resolve the linked category entry
+  },
+}
+
+// ⚠️ Acceptable when no linked fields already exist at depth ≥ 2
+queryParams: {
+  fields: [...baseFields, 'author'],
+  linkDepth: 1,
+}
+
+// ❌ Avoid when linkDepth is already 2+ — use fieldLinkDepths instead
+queryParams: {
+  linkDepth: 3, // resolves ALL linked fields 3 levels deep — expensive
+}
+```
+
+### Pagination modes
+
+| Mode | Config | Behaviour |
+|------|--------|-----------|
+| Default | — | Replace results on each page navigation |
+| Load more | `loadMorePaging: true` | Append results; all loaded pages accumulated in `paging.pagesLoaded` |
+| Internal | `internalPaging: true` | Fetch all at once; paginate entirely in-browser |
+
+## Annotated example
+
+A complete `search.config.ts` showing facets, listings, and a minilist:
+
+```typescript title="src/app/search/search.config.ts"
+import type { SearchConfig, WeightedSearchField } from '@zengenti/contensis-react-base/search';
+import type { WhereClause } from '@zengenti/contensis-react-base/models/search/models/Search';
+import { contentTypes } from '~/schema/contentTypes.schema';
+import { baseFields } from '~/schema/fields.schema';
+import { facets, listings, minilists, freeTextWeights } from '~/schema/search.schema';
+
+const whereSysUri: WhereClause = { field: 'sys.uri', exists: true };
+
+export const searchConfig = {
+  facets: {
+    [facets.all]: {
+      title: 'Site Search',
+      queryParams: {
+        contentTypeIds: [
+          contentTypes.blogPost,
+          contentTypes.plant,
+        ],
+        fields: [...baseFields],
+        linkDepth: 0,
+        pageSize: 10,
+        weightedSearchFields: [
+          { fieldId: 'entryTitle',       weight: freeTextWeights.title },
+          { fieldId: 'entryDescription', weight: freeTextWeights.description },
+        ] as WeightedSearchField[],
+        customWhere: [whereSysUri],
+        fuzzySearch: false,
+        orderBy: ['-sys.version.published'],
+      },
+    },
+  },
+
+  listings: {
+    [listings.plants]: {
+      title: 'Plants',
+      queryParams: {
+        contentTypeIds: [contentTypes.plant],
+        fields: [...baseFields, 'category'],
+        fieldLinkDepths: { category: 1 },
+        pageSize: 12,
+        customWhere: [whereSysUri],
+        loadMorePaging: true,
+        orderBy: ['fields.entryTitle'],
+      },
+      filters: {
+        category: {
+          title: 'Category',
+          fieldId: 'category.sys.id',   // linked entry — always use .sys.id
+          fieldOperator: 'equalTo',
+          isSingleSelect: false,
+          contentTypeId: contentTypes.category,
+          items: [],                    // CRB populates at runtime
+        },
+      },
+    },
+  },
+
+  minilist: {
+    [minilists.relatedArticles]: {
+      title: 'Related Articles',
+      queryParams: {
+        contentTypeIds: [contentTypes.blogPost],
+        fields: [...baseFields],
+        pageSize: 4,
+        customWhere: [whereSysUri],
+      },
+    },
+  },
+} as SearchConfig;
+```
+
+For the `customWhere` operator syntax and `SearchFilter` type reference, see the [Filters](/docs/react-starter/search/filters) guide.
