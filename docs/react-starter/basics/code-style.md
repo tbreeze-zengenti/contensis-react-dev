@@ -1,10 +1,11 @@
 ---
 sidebar_position: 9
+title: Code style
 ---
 
 # Code Style
 
-This guide covers naming conventions, Styled Components patterns, and file organisation. Following these conventions keeps the codebase consistent and predictable.
+This guide covers naming conventions, Styled Components patterns, and file organization. Following these conventions keeps the codebase consistent and predictable.
 
 ## Naming conventions
 
@@ -21,7 +22,7 @@ This guide covers naming conventions, Styled Components patterns, and file organ
 
 ## Import order
 
-Organise imports in this order, with a blank line between each group:
+Organize imports in this order, with a blank line between each group:
 
 ```typescript
 // 1. React

@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+title: Delivery API
 ---
 
 # Delivery API
@@ -98,7 +99,7 @@ import { deliveryApi } from '@zengenti/contensis-react-base/util';
 import { cachedSearch } from '@zengenti/contensis-react-base/util';
 ```
 
-:::warning
+:::caution
 Under high concurrency, static imports can cause incorrect SSR cache invalidation headers to be generated for concurrent requests. Always use the `useDeliveryApi` hook or pass `ssr` through routing hooks instead.
 :::
 

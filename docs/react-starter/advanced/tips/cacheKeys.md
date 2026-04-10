@@ -1,21 +1,22 @@
 ---
 sidebar_position: 1
+title: Cache keys
 ---
 
 # Cache Keys
 
-When writing your own backing code that makes calls to the Delivery API, we **strongly recommend** using the exports available in `contensis-react-base/util` package. They come pre-connected to the current Contensis project and uses a delivery client that is hooked up with handlers that allow cache invalidation to work for pages rendered in SSR. They have been updated to provide full TypeScript intellisense which is invaluable for both TypeScript and JavaScript developers.
+When writing backing code that makes calls to the Delivery API, it is **strongly recommended** to use the exports available in the `contensis-react-base/util` package. They come pre-connected to the current Contensis project and use a delivery client that is hooked up with handlers that allow cache invalidation to work for pages rendered in SSR. They have been updated to provide full TypeScript intellisense which is invaluable for both TypeScript and JavaScript developers.
 
 ### Strongly recommended approach
 
-The methods available in these imports allow us to make the simple api calls we need to surface regular content that provides a wrapped instance of `contensis-delivery-api` [npm package](https://www.npmjs.com/package/contensis-delivery-api) JavaScript client that works with your app.
+The methods available in these imports allow you to make the API calls needed to surface regular content. They provide a wrapped instance of the `contensis-delivery-api` [npm package](https://www.npmjs.com/package/contensis-delivery-api) JavaScript client that works with your app.
 
-For the most reliable SSR experience we have created a new hook that can be called within any React component and ensures everything is sourced from the same component tree (and scoped to the current request in SSR).
+For the most reliable SSR experience, a new hook is available that can be called within any React component and ensures everything is sourced from the same component tree (and scoped to the current request in SSR).
 ```typescript
 import { useDeliveryApi } from '@zengenti/contensis-react-base/util';
 ```
 
-To use this in redux-saga backing code we need to pass the reference to the delivery api we obtained from the hook call with the action payload when we dispatch the action from within the component.
+To use this in redux-saga backing code, pass the delivery API reference obtained from the hook call in the action payload when dispatching from within the component.
 
 ```tsx
 const SomeReduxComponent = () => {
@@ -36,7 +37,7 @@ const SomeReduxComponent = () => {
   return (<MyComponentToRender data={myData} />);
 }
 ```
-And in the redux-saga code we can access the api in the payload we provided from the action argument
+In the redux-saga code, access the API from the action payload:
 
 ```typescript
 export const sagas = [
@@ -56,9 +57,9 @@ export function* fetchData(action: { deliveryApi: SSRContext['api'] }) {
 
 ```
 
-A simpler but less reliable way to import the same api utility we can import it like this anywhere
+A simpler but less reliable alternative is to import the same API utility directly:
 
-We are now advising against this in favour of the approach above. The objects returned by the `useDeliveryApi` and `useSSRContext` hooks are context-based and references the component tree we are rendering. We have found in high concurrent load scenarios the cache invalidation headers in SSR are not generated correctly for every concurrent request when using the static imports of the api helpers.
+This approach is no longer recommended. The objects returned by the `useDeliveryApi` and `useSSRContext` hooks are context-based and reference the component tree being rendered. Under high concurrent load, cache invalidation headers in SSR are not generated correctly for every concurrent request when using the static imports of the API helpers.
 
 ``` typescript
 import { deliveryApi } from '@zengenti/contensis-react-base/util';
@@ -66,7 +67,7 @@ import { deliveryApi } from '@zengenti/contensis-react-base/util';
 
 The next example provides a similar Delivery API implementation except calls made client-side are cached locally until the next page reload preventing needless duplicate api calls.
 
-We are now advising against this approach due to the same SSR caveat as above
+This approach is no longer recommended, for the same SSR reason described above.
 ``` typescript
 import { cachedSearch } from '@zengenti/contensis-react-base/util';
 ```
@@ -103,13 +104,13 @@ Pages that contain content that is rendered purely client-side is unaffected by 
 
 #### Existing pattern
 
-These exported methods have existed as long as we have been using React for writing our web apps. They have been used a lot across many implementations and have been developed and enhanced many times and are designed to work best with Contensis Cloud deployments.
+These exported methods have existed since React was adopted for building web apps with Contensis. They have been used across many implementations and have been developed and enhanced many times, designed to work best with Contensis Cloud deployments.
 
-We strongly urge you to refactor existing similar implementations to use these imported methods from `contensis-react-base/util` to get the best experience with deployments to Contensis Cloud.
+Refactor existing similar implementations to use these imported methods from `contensis-react-base/util` to get the best experience with deployments to Contensis Cloud.
 
 #### Future-proofing
 
-Having these wrapped methods available as imports from `contensis-react-base` package means everybody can get the same experience without updating tons of app code each time we want to introduce new features or need to fix any existing bugs.
+Having these wrapped methods available as imports from `contensis-react-base` package means everybody can get the same experience without updating app code each time new features are introduced or bugs are fixed.
 
 #### Secure Delivery API
 

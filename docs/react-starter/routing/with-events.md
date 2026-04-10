@@ -1,13 +1,17 @@
+---
+sidebar_position: 2
+title: Routing with events
+---
 
 # With Events
 
-WithEvents is a part of our Routing setup & it enables us to trigger events under our routes.
+WithEvents is part of the routing setup and enables you to trigger events under your routes.
 
-## OnRouteLoad
+## onRouteLoad
 
-The OnRouteLoad event is the first event our app encounters when routing. We trigger this event **before** fetching entry data. On any `onRouteLoad` event we can access the following parameters: `location`, `path`, `staticRoute`, `statePath`, & `ssr`.
+The `onRouteLoad` event is the first event the app encounters when routing. It fires **before** fetching entry data. On any `onRouteLoad` event you can access the following parameters: `location`, `path`, `staticRoute`, `statePath`, and `ssr`.
 
-This event exposes the `routeLoadOptions` object which allows us to control elements of our app setup.
+This event exposes the `routeLoadOptions` object which allows you to control elements of your app setup.
 
 The `ssr` parameter is an `SSRContext` object — the same object returned by the `useSSRContext` hook in your component tree. Pass it to any sagas or custom logic called within `onRouteLoad` to ensure SSR cache invalidation works correctly.
 
@@ -26,14 +30,14 @@ onRouteLoad: function* onRouteLoad({ ssr }) {
 },
 ```
 
-## OnRouteLoaded
-The OnRouteLoaded event is the second event our app encounters when routing. We trigger this event **after** fetching entry data. On any `onRouteLoaded` event we can access the following parameters: `location`, `path`, `staticRoute`, `entry`, & `ssr`.
+## onRouteLoaded
+The `onRouteLoaded` event is the second event the app encounters when routing. It fires **after** fetching entry data. On any `onRouteLoaded` event you can access the following parameters: `location`, `path`, `staticRoute`, `entry`, and `ssr`.
 
 Like `onRouteLoad`, the `ssr` parameter should be passed through to any backing sagas that make Delivery API calls.
 
-## CustomNavigation
+## customNavigation
 
-The `customNavigation` object enables us to populate the App's Redux store with data for `ancestors`, `children`, `siblings` & `tree` data from Site View. Each key accepts a `boolean` (or a `number` depth for tree). Enabling these options are essential for getting [Node Options](#node-options) parameters to work on routes.
+The `customNavigation` object populates the Redux store with `ancestors`, `children`, `siblings`, and `tree` data from Site View. Each key accepts a `boolean` (or a `number` depth for tree). These options are required for [Node Options](#node-options) parameters to work on routes.
 
 ```typescript
 customNavigation: {
@@ -45,27 +49,27 @@ customNavigation: {
 ```
 
 
-## DefaultLang
+## defaultLang
 
-Enables us to set a default language for the app. By default it's set to `en-GB`.
+Sets a default language for the app. Defaults to `en-GB`.
 
-## EntryLinkDepth
+## entryLinkDepth
 
-This option allows us to set a global link depth for **all** requests made by the App. 
+Sets a global link depth for **all** requests made by the app. 
 
-:::warning
+:::caution
 The default `entryLinkDepth` should only be updated if you understand the consequences as it can lead to unnecessarily large payloads.
 :::
 
-## PreventScrollTop
+## preventScrollTop
 
-This `boolean` toggle allows you to enable or disable the global scroll top action that React Router triggers when routing. For finer control you can access the `location` or `path` object to create rules.
+A `boolean` toggle that enables or disables the global scroll-to-top action React Router triggers on navigation. For finer control, access the `location` or `path` object to create conditional rules.
 
-## Loading Search
+## Loading search
 
-By default we use WithEvents to load Search Listings under specific Routes. The listingType or contentTypeId specified in a route is compared in the following conditional statement to determine whether a Listing should be loaded:
+By default, WithEvents loads search listings under specific routes. The `listingType` or `contentTypeId` specified in a route is compared in the following conditional to determine whether a listing should be loaded:
 
-```jsx title="The section of the withEvents file that loads Search Listings"
+```typescript title="The section of the withEvents file that loads Search Listings"
 
     const contentTypeId = entry?.sys?.contentTypeId;
     const listingType =

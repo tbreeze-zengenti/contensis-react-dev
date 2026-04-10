@@ -1,5 +1,6 @@
 ---
-sidebar_position: 1
+sidebar_position: 5
+title: Maintenance
 ---
 
 # Maintenance
@@ -8,7 +9,7 @@ Advice on maintaining your project.
 
 ## Node.js
 
-We recommend you ensure that your project runs on a maintained version of Node.js at all times. Node.js typically requires upgrading every 18-24 months. Refer to the [Node.js schedule](https://nodejs.org/en/about/previous-releases) for more details.
+Ensure your project runs on a maintained version of Node.js at all times. Node.js typically requires upgrading every 18-24 months. Refer to the [Node.js schedule](https://nodejs.org/en/about/previous-releases) for more details.
 
 
 An `.nvmrc` file is included in the project root to specify the Node.js version for the project. This file is useful for switching versions with [NVM](https://github.com/nvm-sh/nvm) or utilising auto-switching scripts.
@@ -21,9 +22,9 @@ You can find auto-switching scripts for various terminals (Base, ZSH, etc.) that
 
 ### Upgrading Node
 
-Before upgrading your Node.js version, it's helpful if you have Docker installed locally and have some familiarity with Dockerised applications.
+Before upgrading your Node.js version, it's helpful if you have Docker installed locally and have some familiarity with Dockerized applications.
 
-We **highly recommend** handling Node.js upgrades in a feature branch to avoid blocking development in other branches.
+It is **highly recommended** to handle Node.js upgrades in a feature branch to avoid blocking development in other branches.
 
 To upgrade your Node.js version, follow these steps:
 1. Update `.nvmrc` to the desired version
@@ -39,9 +40,9 @@ To upgrade your Node.js version, follow these steps:
 
 ## Dependencies (package.json)
 
-We recommend you regularly check for dependency updates and aim to upgrade [MINOR or PATCH versions](https://semver.org/) when available.
+Regularly check for dependency updates and aim to upgrade [MINOR or PATCH versions](https://semver.org/) when available.
 
-We **highly recommend** handling dependency updates in a feature branch to avoid blocking development in other branches.
+It is **highly recommended** to handle dependency updates in a feature branch to avoid blocking development in other branches.
 
 ### Maintaining dependencies
 

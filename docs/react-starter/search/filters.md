@@ -1,5 +1,6 @@
 ---
 sidebar_position: 4
+title: Filters
 ---
 
 # Filters
@@ -97,7 +98,7 @@ type SearchFilter = {
   items: FilterItem[];        // Selectable values
   fieldOperator?: string;     // How items match: 'equalTo' | 'in' | 'contains' | 'between' | etc.
   logicOperator?: string;     // How multiple selections combine: 'or' (default) | 'and'
-  isSingleSelect?: boolean;   // true = radio behaviour (one item at a time)
+  isSingleSelect?: boolean;   // true = radio behavior (one item at a time)
   isGrouped?: boolean;        // Sync selected values across facets sharing this key
   renderable?: boolean;       // false = hidden — drives query but not shown in UI
   aggregations?: boolean;     // true = CRB returns result counts per item

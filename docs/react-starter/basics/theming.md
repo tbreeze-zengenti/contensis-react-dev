@@ -1,5 +1,6 @@
 ---
 sidebar_position: 4
+title: Theming
 ---
 
 # Theming
@@ -12,16 +13,16 @@ The theme lives in `src/app/theme/` and is composed of four files:
 
 | File | Purpose |
 |------|---------|
-| `colors.ts` | Brand colour palette |
+| `colors.ts` | Brand color palette |
 | `layout.ts` | Spacing scale, breakpoints, media queries, grid settings |
 | `styled.d.ts` | TypeScript declaration that types the `DefaultTheme` |
 | `globalStyles.ts` | Global CSS reset and base styles |
 
 The theme object is assembled in `src/app/theme/index.ts` and passed to `ThemeProvider` at the application root.
 
-## Colours
+## Colors
 
-`colors.ts` defines the brand colour palette. Extend this file to add your project's colours:
+`colors.ts` defines the brand color palette. Extend this file to add your project's colors:
 
 ```typescript title="src/app/theme/colors.ts"
 export const colors = {
@@ -31,7 +32,7 @@ export const colors = {
 };
 ```
 
-Reference colours in Styled Components via `theme.colors.*`:
+Reference colors in Styled Components via `theme.colors.*`:
 
 ```typescript
 const Heading = styled.h1`

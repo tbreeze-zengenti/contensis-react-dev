@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+title: Blocks
 ---
 
 # Blocks
@@ -8,11 +9,11 @@ This guide provides an overview of Blocks in Contensis, covering setup and deplo
 
 Key topics include CI/CD configuration, token setup, Docker integration, routing, and rendering. It also explains workflows for branching, previewing, and releasing Blocks, with a focus on streamlining deployment and maintenance. 
 
-## Supported Versions
+## Supported versions
 
-Blocks are supported by apps running Contensis React Base >3.x.x, however we always recommend ensuring you’re on the latest version of Contensis React Base.
+Blocks are supported by apps running Contensis React Base >3.x.x, though it is always recommended to ensure you’re on the latest version of Contensis React Base.
 
-We recommend ensuring that `zengenti-buildstartup-package` is on version `0.0.16` as a minimum for Blocks.
+Ensure that `zengenti-buildstartup-package` is on version `0.0.16` as a minimum for Blocks.
 
 ## Config
 
@@ -22,7 +23,7 @@ In a GitLab-hosted project, Block CI/CD is configured using the **`gitlab-ci.ym
 - **Push:** Uploads the Docker image to Blocks.
 - **Release:** Tags the build with a release tag.
 
-### Required Tokens
+### Required tokens
 
 A Block configuration requires three essential tokens for proper functionality:
 
@@ -30,14 +31,14 @@ A Block configuration requires three essential tokens for proper functionality:
 2. **CONTENSIS_CLIENT_ID**
 3. **CONTENSIS_SHARED_SECRET**
 
-### GitLab Access Token
+### GitLab access token
 
 To create an access token in GitLab:
 
 1. Go to your repository’s **Settings → Access Token**.
 2. Create a new token with the **`api`** and **`read_repository`** scopes.
 
-### Contensis Tokens
+### Contensis tokens
 
 These tokens are Management API keys, which require appropriate roles within your Contensis environment:
 
@@ -45,7 +46,7 @@ These tokens are Management API keys, which require appropriate roles within you
 2. Go to **Settings → Roles**, and create a new role with the **Blocks** permission type set to **All Actions.**
 3. In the Role’s **API Keys** tab, assign your newly created API key to this role.
 
-### Adding Tokens to CI/CD Variables
+### Adding tokens to CI/CD variables
 
 To keep these tokens secure and prevent them from being exposed during builds, you must configure them as CI/CD variables in GitLab:
 
@@ -57,7 +58,7 @@ To keep these tokens secure and prevent them from being exposed during builds, y
 
 The Docker build of your project must include a copy of the `manifest.json` file. This can be achieved by utilising a COPY command in your Docker build.
 
-```shell title="In a React Starter based project you will need to add the COPY command before the ENTRYPOINT in the ci-build.dockerFile"
+```bash title="ci-build.dockerFile"
 # Add this COPY command before ENTRYPOINT
 COPY ./manifest.json /manifest.json
 ENTRYPOINT node ...
@@ -73,11 +74,11 @@ See: https://www.contensis.com/help-and-docs/guides/deploying-websites-and-apps/
 
 To change the Renderer controls you can navigate to **Settings → Renderers → Block Name.**
 
-### Content Type Rendering
+### Content type rendering
 
 From the Renderer settings panel you can define which Content Types a Block should render. Individual Content Types can be chosen or all of them.
 
-### Site View Rendering
+### Site View rendering
 
 From the Site View panel you can define which Renderer a Block should use for each node.
 
@@ -108,17 +109,17 @@ This routing structure can be beneficial if you're still migrating from Classic 
 
 
 
-### Content Type Routes
+### Content type routes
 
 This pattern means that Content Type routes will always resolve to the Block so long as they are assigned a Renderer, see [Content Type Rendering](/docs/react-starter/deployment/blocks#content-type-rendering). 
 
-### Static Routes
+### Static routes
 
 For Static Routes however you will have to ensure the corresponding Site View node has the correct renderer assigned, see [Site View Rendering](/docs/react-starter/deployment/blocks#site-view-rendering).
 
-### Server Features
+### Server features
 
-Some features, like the sitemap in our Starter project, will require a node with an assigned renderer just like a Static Route.
+Some features, like the sitemap in the React Starter project, will require a node with an assigned renderer just like a Static Route.
 
 ## Manifest
 
@@ -130,9 +131,9 @@ The `manifest.json` file, normally located at the root of a project, allows some
 | `static_paths` | `string[]` | `[’static’, ‘image-library’]` | Allows you to add additional static paths. The default values will be retained. |
 | `enableFullUriRouting` | `boolean` | `false` | See [Full URI Routing](/docs/react-starter/deployment/blocks#full-uri-routing)  |
 
-### Full URI Routing
+### Full URI routing
 
-This will be set to `true` for any CRB based project. This means the Block will use it’s own routing to handle the absolute path of the current page. For example, if the original request is, [*https://www.website.com/a/specific/path](https://www.website.com/a/specific/path),* then the Block will receive this request, http://10.34.65.87/a/specific/path?nodeId=xxx&entryId=yyy.
+This will be set to `true` for any CRB based project. This means the Block will use its own routing to handle the absolute path of the current page. For example, if the original request is [https://www.website.com/a/specific/path](https://www.website.com/a/specific/path), then the Block will receive this request, http://10.34.65.87/a/specific/path?nodeId=xxx&entryId=yyy.
 
 If the value is `false` for the same request the block will receive this request http://10.34.65.87/?originPath=/a/specific/path&nodeId=xxx&entryId=yyy
 
@@ -144,11 +145,11 @@ All content served by a Block is rendered via the request handler service. The s
 
 With Blocks you no longer have to define Reverse Proxy paths (`REVERSE_PROXY_PATHS`) for assets in production as assets are resolved through the Block. You may still have to define reverse proxy paths for assets in local development however. 
 
-### Static Assets
+### Static assets
 
 Static Assets should be handled automatically in a CRB app since `static` is a default static path within the [Manifest](/docs/react-starter/deployment/blocks#manifest).
 
-## Branching and Previewing
+## Branching and previewing
 
 ### Branches
 
@@ -220,11 +221,11 @@ See: https://www.contensis.com/help-and-docs/guides/deploying-websites-and-apps/
 
 See: https://www.contensis.com/help-and-docs/guides/deploying-websites-and-apps/blocks/make-a-block-live
 
-## Requesting Specific Blocks
+## Requesting specific Blocks
 
 If for some reason you need to request a specific branch and/or version of a Block you can do so by making requests that include a cookie to inform the request handler which Block you’re trying to access. Here’s an example of a curl request:
 
-```shell title="An example curl request for a specific branch/version from a Block preview URL"
+```bash title="An example curl request for a specific branch/version from a Block preview URL"
 ## Update the following parameters to suit your request
 ## BLOCK-NAME, BRANCH-NAME, VERSION, ALIAS
 ## An easy way to get the correct cookie is to preview your desired Block in the browser and copy the cookie value from dev tools
@@ -232,13 +233,13 @@ If for some reason you need to request a specific branch and/or version of a Blo
 curl -v --cookie "x-block-config=BLOCK-NAME-branch%3DBRANCH-NAME%26BLOCK-NAME-versionno%3DVERSION" https://preview-ALIAS.cloud.contensis.com/
 ```
 
-## Further Reading
+## Further reading
 
-### Block Statuses
+### Block statuses
 
 To understand Block statues such as “Started”, “Running”, or “Available”, see: https://www.contensis.com/help-and-docs/guides/deploying-websites-and-apps/blocks/understanding-block-status
 
-### Mark as Broken
+### Mark as broken
 
 To understand what “Mark as broken” does see: https://www.contensis.com/help-and-docs/guides/deploying-websites-and-apps/blocks/mark-a-block-as-broken
 
@@ -246,11 +247,11 @@ To understand what “Mark as broken” does see: https://www.contensis.com/help
 
 To rollback a Block see: https://www.contensis.com/help-and-docs/guides/deploying-websites-and-apps/blocks/rollback-to-a-previous-block-version
 
-### Console Logs
+### Console logs
 
 To see the console logs for a Block see: https://www.contensis.com/help-and-docs/guides/deploying-websites-and-apps/blocks/view-the-console-logs-for-a-block
 
-## Help Guides
+## Help guides
 
 ### Blocks
 

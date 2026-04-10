@@ -1,5 +1,6 @@
 ---
 sidebar_position: 8
+title: Storybook
 ---
 
 # Storybook
@@ -18,7 +19,7 @@ This starts Storybook at [http://localhost:6006](http://localhost:6006).
 
 Story files live alongside their components and follow the `*.stories.tsx` naming convention.
 
-### Story organisation
+### Story organization
 
 Use the `title` property to group stories in the sidebar. The convention is `Category / Subcategory / ComponentName`:
 
@@ -74,7 +75,7 @@ export const Compact: Story = {
 |---|---|
 | Dropdown select | `control: 'select', options: [...]` |
 | Toggle | `control: 'boolean'` |
-| Colour picker | `control: 'color'` |
+| Color picker | `control: 'color'` |
 | Number range | `control: { type: 'range', min: 0, max: 100 }` |
 | Hidden from controls | `table: { disable: true }` |
 

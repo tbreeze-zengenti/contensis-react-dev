@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+title: Installation
 ---
 
 # Installation
@@ -10,7 +11,7 @@ React Starter is a starter project built upon Zengenti's Contensis React Base fr
 
 - [Node.js](https://nodejs.org/en) version 20 or above (as specified in `.nvmrc`) — which can be checked by running `node -v`
 
-We recommend using [nvm](https://github.com/nvm-sh/nvm) for managing multiple versions of Node.
+It is recommended to use [nvm](https://github.com/nvm-sh/nvm) for managing multiple versions of Node.
 
 ## Installation
 
@@ -45,7 +46,7 @@ git add .
 git commit -m "Initial commit"
 ```
 
-### Existing Project
+### Existing project
 
 If you are joining an existing project or one created on your behalf by Zengenti, simply clone and install the repository:
 
@@ -62,7 +63,7 @@ To begin developing locally you'll need to familiarise yourself with these comma
 
 - `npm start` - start the application in development mode (http://localhost:3000/)
 - `npm run storybook` - start storybook in development mode (http://localhost:6006/)
-- `npm run build:server` - build the application and start the server-side application from source code (allowing us to connect a debugger and stop on code that is executed server-side) (http://localhost:3001/)
+- `npm run build:server` - build the application and start the server-side application from source code (allowing you to connect a debugger and stop on code that is executed server-side) (http://localhost:3001/)
 
 ## Project structure
 
@@ -78,7 +79,7 @@ my-project/
 │   │   ├── redux/                  # Custom Redux slices, selectors, sagas
 │   │   ├── search/                 # Search config, mappers, and minilist hooks
 │   │   ├── schema/                 # Constants: content type IDs, field lists, search keys
-│   │   ├── theme/                  # Styled Components theme (colours, spacing, breakpoints)
+│   │   ├── theme/                  # Styled Components theme (colors, spacing, breakpoints)
 │   │   ├── types/                  # Global TypeScript type definitions
 │   │   └── util/                   # Utility functions and custom hooks
 │   ├── server/                     # Express SSR server entry point

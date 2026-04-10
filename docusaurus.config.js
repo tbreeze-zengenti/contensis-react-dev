@@ -26,6 +26,7 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
+          exclude: ['**/plans/**'],
         },
         blog:  {
           showReadingTime: true,

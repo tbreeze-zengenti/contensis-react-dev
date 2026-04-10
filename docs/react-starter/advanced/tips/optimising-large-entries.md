@@ -1,12 +1,17 @@
-# Optimising Large Entries
+---
+sidebar_position: 6
+title: Optimizing large entries
+---
 
-When accessing large entries, particularly those with a `linkDepth` greater than `1`, we can end up returning fields we do **not** need. These un-required fields add extra weight to the page. To combat this we can utilise the `fields` option. 
+# Optimizing large entries
 
-The `fields` option allows us to pass an array of strings, `string[]`, to build our query for this specific route. So instead of returning the entire `entry` object the query will only return the `fields` specific from that entry.
+When accessing large entries, particularly those with a `linkDepth` greater than `1`, you can end up returning fields you do **not** need. These un-needed fields add extra weight to the page. To combat this, use the `fields` option.
+
+The `fields` option allows you to pass an array of strings, `string[]`, to build the query for a specific route. So instead of returning the entire `entry` object the query will only return the `fields` specific from that entry.
 
 The `schema.ts` file in React Starter is a good place for storing your fields. These can then be passed to the `fields` option using the spread operator; `fields: [...BaseFields]`.
 
-```jsx title="An example of how the fields option can be defined on a Content Type Mapping route"
+```typescript title="An example of how the fields option can be defined on a Content Type Mapping route"
 import { ContentTypeMapping } from '@zengenti/contensis-react-base';
 
 import { entryMapper } from '../util/json-mapper';

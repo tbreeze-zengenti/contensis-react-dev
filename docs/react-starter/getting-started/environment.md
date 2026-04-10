@@ -1,18 +1,19 @@
 ---
 sidebar_position: 2
+title: Environment
 ---
 
 # Environment
 
 A file called `.env` is required in the project root, this contains the core pieces of information to connect to your Contensis environment.
 
-Inside an `.env` we strictly require the following keys in order to connect to the Contensis: `ALIAS`, `PROJECT`, `ACCESS_TOKEN`.
+Inside an `.env`, the following keys are required to connect to Contensis: `ALIAS`, `PROJECT`, `ACCESS_TOKEN`.
 
 ### Alias
 
-The alias is what we call the part of a CMS URL that changes. This is the part of the URL located between `cms-` and `.cloud.contensis.com`.
+The alias is the part of a CMS URL that changes. It is the part of the URL located between `cms-` and `.cloud.contensis.com`.
 
-For example our Contensis instance for Leif can be found at [cms-leif.cloud.contensis.com](https://www.notion.so/Environments-env-e10a086c22bf457397b18713f2fca26e?pvs=21) so our ALIAS is `leif`.
+For example, the Leif instance can be found at [cms-leif.cloud.contensis.com](https://www.notion.so/Environments-env-e10a086c22bf457397b18713f2fca26e?pvs=21) so the ALIAS is `leif`.
 
 ### Project
 
@@ -22,7 +23,7 @@ Project refers to the ID of the project within Contensis. You can obtain this by
 Nearly all the URLs in modern Contensis screens & API calls with also contain the project ID. For example, if you go to the Entries screen in your CMS you will see the website ID in the URL.
 :::
 
-### Access Token
+### Access token
 
 The Delivery API Access Token is required to access the data from the CMS. It can be obtained by heading to Contensis Classic → Management Console (cog icon) → Global Settings → and then search for DeliveryAPI_AccessToken.
 
@@ -34,7 +35,7 @@ The Access Token is for a specific CMS & not unique to a CMS project. Therefore 
 
 The public-facing URL for this web application, it is not required for connecting to the Contensis CMS.
 
-## Multiple Environments
+## Multiple environments
 
 You may create more env files for different CMS environments by applying a suffix `.{suffix}` to the file name. For example a development env might look like: `.env.development`
 

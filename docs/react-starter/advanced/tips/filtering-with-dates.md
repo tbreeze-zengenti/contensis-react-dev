@@ -1,5 +1,6 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
+title: Filtering with dates
 ---
 
 # Filtering with Dates
@@ -74,7 +75,7 @@ This example demonstrates how to define a series of date-based filters for vario
 
 In this filter, the `items` are manually defined, each specifying a date range using expression functions. The `now()` function accepts arguments to specify a time period either in the past or future, following the syntax outlined in the [search documentation](https://www.contensis.com/help-and-docs/apis/delivery-http/search-basics/relative-time-period#:~:text=to%20%22now(%2D1d)%22.-,Syntax,-The%20token%20consists). In this case, all arguments are in the future (`+`) and expressed in days (`d`).
 
-Using this approach, we create a series of contextual filters that allow users to quickly retrieve content within a defined time period.
+This approach creates a series of contextual filters that allow users to quickly retrieve content within a defined time period.
 
 ## Date range filtering (calendar)
 

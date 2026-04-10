@@ -1,5 +1,6 @@
 ---
 sidebar_position: 5
+title: Assets
 ---
 
 # Assets
@@ -20,7 +21,7 @@ public/
 
 Asset processing is configured in **`webpack/webpack.config.assets.js`**. This config handles:
 
-- Image optimisation and file-loader rules for `.png`, `.jpg`, `.gif`, `.svg`
+- Image optimization and file-loader rules for `.png`, `.jpg`, `.gif`, `.svg`
 - Font file handling (`.woff`, `.woff2`, `.ttf`, `.eot`)
 - Inline SVG support
 

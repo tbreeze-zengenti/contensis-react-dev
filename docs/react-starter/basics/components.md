@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+title: Components
 ---
 
 # Components
@@ -12,7 +13,7 @@ In this project, **component** refers to a React component — a `.component.tsx
 
 Every component lives in its own directory under `src/app/components/`:
 
-```
+```text
 src/app/components/
 └── card/
     ├── card.component.tsx      # Main component (required)

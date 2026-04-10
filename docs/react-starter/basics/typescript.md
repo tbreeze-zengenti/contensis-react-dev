@@ -1,5 +1,6 @@
 ---
 sidebar_position: 6
+title: TypeScript
 ---
 
 # TypeScript
@@ -24,21 +25,21 @@ const foo: string = "bar";
 
 Now if you attempt to set `foo` to a value that *isn’t* a string the compiler will throw an error. This is type safety & it can help to keep code consistent whilst reducing bugs.
 
-## Why do we use it?
+## Why use TypeScript?
 
-We use TypeScript because it makes our code **predictable** & **readable**. 
+TypeScript makes the code **predictable** & **readable**. 
 
 It’s predictable because everything stays as it was defined - a string can’t suddenly become a Boolean. This increases the chance that everything works as intended.
 
 It’s readable because the types allow the code to be self-expressive, providing a form of built-in documentation. 
 
-### Code Completion
+### Code completion
 
-A benefit of TypeScript is that it allows us to leverage Intelligent Code Completion (ICC).
+A benefit of TypeScript is that it enables Intelligent Code Completion (ICC).
 
 ICC (better known as Intellisense in VS Code) will provide prompts based on the types to help you select the correct values & functions.
 
-## Path Aliases
+## Path aliases
 
 React Starter configures two TypeScript path aliases in `tsconfig.json` to avoid long relative import paths:
 
@@ -61,7 +62,7 @@ import Meta from '~/components/meta/meta.component';
 
 The `~` alias covers everything under `src/app/`, which is where the vast majority of imports will point. The `-` alias is rarely needed in day-to-day development but is useful when importing from the project root (e.g. `tsconfig.json` paths or root-level utilities).
 
-## Strict Mode
+## Strict mode
 
 React Starter enables TypeScript strict mode. This catches a broad class of errors at compile time rather than runtime:
 
@@ -95,7 +96,7 @@ interface CardProps {
 }
 ```
 
-## Generics for CMS Data
+## Generics for CMS data
 
 Use TypeScript generics when working with Contensis Delivery API responses. Extend the `Entry` base type to add your content type's specific fields:
 
@@ -109,7 +110,7 @@ type BlogPost = Entry & {
 };
 ```
 
-## Utility Types
+## Utility types
 
 Use TypeScript's built-in utility types to derive new types from existing ones rather than duplicating type definitions:
 
@@ -124,7 +125,7 @@ type CardTitleProps = Pick<CardProps, 'title' | 'description'>;
 type CardWithoutImage = Omit<CardProps, 'imageUrl'>;
 ```
 
-## React Types
+## React types
 
 ```typescript
 import React from 'react';

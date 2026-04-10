@@ -1,27 +1,28 @@
 ---
 sidebar_position: 1
+title: Composer
 ---
 
 # Composer
 
-## CMS Setup
+## CMS setup
 
-Firstly, inside Contensis we’ll need to add a **Composer** field to our chosen Content Type & then include a **Rich Text** field inside the composer. 
+First, inside Contensis add a **Composer** field to your chosen Content Type and include a **Rich Text** field inside the composer.
 
-We’ll assign a value of `content` to our Composer field & a value of `richText` to our Rich Text field.
+Assign a value of `content` to the Composer field and a value of `richText` to the Rich Text field.
 
-## Creating a “Composer Component”
+## Creating a Composer component
 
-Next we’ll need to create a Markup component that will render the content of our Rich Text field. 
+Next, create a Markup component that will render the content of the Rich Text field.
 
-Our Markup component is made up of the following files: 
+The Markup component is made up of the following files: 
 
 - `markup.component.tsx`
 - `markup.styled.ts`
 - `markup.type.ts`
 - `markup.mapper.ts`
 
-```jsx title="Example Markup component file"
+```tsx title="Example Markup component file"
 import React from 'react';
 
 import { MarkupProps } from './markup.types';
@@ -41,11 +42,11 @@ const Markup = ({ className, text}: MarkupProps) => {
 export default Markup;
 ```
 
-Both `markup.types.ts` & `markup.mapper` have requirements for this component to operate in the Composer. 
+Both `markup.types.ts` and `markup.mapper` have requirements for this component to operate in the Composer.
 
-`markup.types.ts` must contain a `_type` prop with a `string` reference to our CMS value. In this case we’re referencing `textArea` as that’s the value we assigned to our Rich Text field.
+`markup.types.ts` must contain a `_type` prop with a `string` reference to the CMS value. In this case `textArea` is the value assigned to the Rich Text field.
 
-```jsx title="Example Markup Types file, with the unique '_type' key"
+```tsx title="Example Markup Types file, with the unique '_type' key"
 export type MarkupProps = {
   _type?: 'richText';
   className?: string;
@@ -53,42 +54,42 @@ export type MarkupProps = {
 };
 ```
 
-`markup.mapper.ts` must contain the correct mapping of props to CMS values as we’ll be importing this mapper into our Composer. 
+`markup.mapper.ts` must contain the correct mapping of props to CMS values, as this mapper is imported into the Composer. 
 
-```jsx title="Example Markup mapper file"
+```tsx title="Example Markup mapper file"
 export const MarkupMapper= {
   text: '.',
 };
 ```
 
 :::tip
-For this component the CMS value returned is a `string` so we can map the prop `html` to `.` without having to reference a value directly.
+For this component the CMS value returned is a `string`, so you can map the prop `html` to `.` without having to reference a value directly.
 :::
 
-## Structuring the Schema
+## Structuring the schema
 
-With our component created we’ll next need to define some data in our `schema.ts` file as a reference for our Composer.
+With the component created, define some data in `schema.ts` as a reference for the Composer.
 
-Inside `schema.ts` there’s a predefined export called `ComposerComponents`. Here we can store a list of keys & values for each component. 
+Inside `schema.ts` there is a predefined export called `ComposerComponents`. Use it to store a list of keys and values for each component.
 
-The `key` can be named whatever suits, so he we’re referencing our component & naming it `markup`, but the `value` **must match** the `_type` value we defined earlier.
+The `key` can be named anything — here it is `markup` — but the `value` **must match** the `_type` value defined earlier.
 
-```jsx title="The ComposerComponents object in the Schema file"
+```tsx title="The ComposerComponents object in the Schema file"
 export const ComposerComponents = {
   // Insert composer components
   markup: 'richText',
 };
 ```
 
-## Dynamic Loading
+## Dynamic loading
 
-The latest version of the Zengenti Base Package utilises `@loadable` to load components.
+The latest version of Contensis React Base (CRB) uses `@loadable` to load components.
 
-With this in mind we’ll need to add our new `Markup` component to `/dynamic/composer.ts` in order to import it *dynamically* into our Composer.
+Add the `Markup` component to `/dynamic/composer.ts` to import it dynamically into the Composer.
 
-Every composer component will need to follow this structure.
+Every composer component follows this structure.
 
-```jsx title="Example of the loadable setup for Composer components"
+```tsx title="Example of the loadable setup for Composer components"
 import loadable from '@loadable/component';
 
 // Import ComponentProps here
@@ -104,22 +105,22 @@ export const Markup = loadable<MarkupProps>(
 ```
 
 :::tip
-Currently in the react-starter project components, pages, & composer components are dynamically loaded.
+In the React Starter, components, pages, and composer components are dynamically loaded.
 
-Therefore if you’re using the starter project you’ll need to ensure that your Composer is loading in `dynamic/components`. By default it will be commented out.
+Ensure your Composer is loading in `dynamic/components`. By default it is commented out.
 :::
 
 ## Creating the Composer
 
-With everything in place we can finally build our Composer.
+With everything in place, build the Composer.
 
 #### Data model
 
-Firstly, inside a new `composer` directory (preferrably inside the same directory as our components) we can create `composer.types.ts` to define the model for our Composer.
+Inside a new `composer` directory (preferably inside the same directory as your components) create `composer.types.ts` to define the model for the Composer.
 
-In this model we’ll add all of our component props to `ComposerItemProps` & export them as `items`.
+In this model, add all component props to `ComposerItemProps` and export them as `items`.
 
-```jsx 
+```tsx 
 // Import ComponentProps here
 import { MarkupProps } from '../markup/markup.types';
 
@@ -130,9 +131,9 @@ export interface ComposerProps {
 export type ComposerItemProps = MarkupProps;
 ```
 
-When you add another Component to the model the ComposerItemProps will need to be amended to include every imported ComponentProps. This can be achieve by seperating all the ComponentProps with a | operator.
+When you add another component to the model, `ComposerItemProps` must be updated to include every imported `ComponentProps`. This can be achieved by separating all the `ComponentProps` with a `|` operator.
 
-```jsx title="Adding more components to the Composer types"
+```tsx title="Adding more components to the Composer types"
 export type ComposerItemProps = (
     | MarkupProps
     | ComponentProps
@@ -141,13 +142,13 @@ export type ComposerItemProps = (
 
 #### Rendering
 
-Next we’ll need to create `composer.tsx` which will contain the logic that determines which component is rendered. 
+Next, create `composer.tsx` which will contain the logic that determines which component is rendered.
 
-This component will map through `items` & check the `_type` values, if there’s a match it will render that component.
+This component maps through `items` and checks the `_type` values — if there is a match, it renders that component.
 
-For every component we’ll need to import it via the `dynamic/composer`.
+Import every component via `dynamic/composer`.
 
-```jsx title="The Composer component controls which component renders"
+```tsx title="The Composer component controls which component renders"
 import React from 'react';
 
 import { Markup } from '~/dynamic/composer';
@@ -183,11 +184,11 @@ Keys are generated using the item's index and `_type` (e.g. `composer-0-richText
 
 #### Mapping
 
-To wrap up we’ll need to create a mapper file for the composer called `composer.mapper.tsx`.
+Create a mapper file for the composer called `composer.mapper.tsx`.
 
-In our mapper we’ll import our specific component mappers, `markup.mapper` in this instance, & export them to `composerPropsMapping` using the `ComposerComponents` we defined in the `schema` file as a key.
+Import the specific component mappers (e.g. `markup.mapper`) and export them to `composerPropsMapping` using the `ComposerComponents` defined in the `schema` file as keys.
 
-```jsx title="Creating the mapping object for the Composer"
+```tsx title="Creating the mapping object for the Composer"
 import { ComposerComponents } from '~/core/schema';
 
 import { MarkupMapping } from '~/features/markup/markup.mapper';
@@ -197,17 +198,17 @@ export const composerPropsMapping = {
 };
 ```
 
-### Adding it to a Page
+### Adding it to a page
 
-With all that done we can finally render our Composer.
+With all that done, the Composer can be rendered.
 
-For this example we’ll create a basic Page with the appropriate `props` & `mapper` to render our Composer.
+This example creates a basic Page with the appropriate `props` and `mapper` to render the Composer.
 
-#### Page Interface
+#### Page interface
 
-In our interface export we need to reference all of the props found within our Composer. To do this we import our ComposerProps & assign them to a prop inside the interface. 
+In the interface export, reference all props found within the Composer. Import `ComposerProps` and assign them to a prop inside the interface. 
 
-```jsx 
+```tsx 
 import { RouteComponentProps } from '@zengenti/contensis-react-base';
 
 import { ComposerProps } from '~/components/composer/composer.types';
@@ -220,13 +221,13 @@ export interface MappedPage {
 export type PageProps = RouteComponentProps<MappedPage>;
 ```
 
-#### Rendering on the Page
+#### Rendering on the page
 
-On our Page component we’ll need to import the `Composer` component & pass it `prop` we assigned in the interface as a spread prop `{...prop}`.
+On the Page component, import the `Composer` component and pass it the prop assigned in the interface as a spread prop `{...prop}`.
 
-In this example `prop` is `contentComposerProps`.
+In this example the prop is `contentComposerProps`.
 
-```jsx
+```tsx
 import React from 'react';
 
 import { PageProps, MappedPage } from './page.types';
@@ -248,17 +249,17 @@ const Page = ({ mappedEntry }: PageProps) => {
 export default Page;
 ```
 
-#### Mapping Items 
+#### Mapping items 
 
-Finally we’ll need to create a specific function inside the Page’s mapper file to map through our Composer.
+Finally, create a specific function inside the Page’s mapper file to map through the Composer.
 
-The `prop` we defined, `contentComposerProps` in this example, is mapped to `items` so that our Composer file can map over `items`. 
+The prop `contentComposerProps` is mapped to `items` so that the Composer file can iterate over them.
 
-Inside `items` we’re defining `content` which is the value we assigned to the Composer field in the CMS.
+Inside `items`, `content` is the value assigned to the Composer field in the CMS.
 
-The function inside of `items` is utilising the `mapComposer` function from `@zengenti/contensis-react-base` to apply to correct mapping to each `_type` it finds.
+The function inside `items` uses the `mapComposer` function from `@zengenti/contensis-react-base` to apply the correct mapping to each `_type` it finds.
 
-```jsx
+```tsx
 import { mapComposer } from '~/core/util/json-mapper';
 
 import { composerPropsMapping } from '~/components/composer/transformations/composer-to-props.mapper';

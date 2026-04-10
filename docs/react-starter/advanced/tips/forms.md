@@ -1,10 +1,15 @@
+---
+sidebar_position: 4
+title: Contensis forms
+---
+
 # Contensis Forms
 
 Requires the Contensis environment to be running version 16.1+.
 
 ## Install the forms package
 
-```sh
+```bash
 npm i @contensis/forms --save
 ```
 
@@ -14,7 +19,7 @@ This update supports adding a block renderer for `_formContentType` and fixes ha
 
 You do not need to install this update if you are not rendering any Canvas content in your app yet
 
-```sh
+```bash
 npm i @contensis/canvas-react --save
 ```
 
@@ -24,13 +29,13 @@ This update adds new reverse proxies used in development only (`v3.2.2+`)
 
 Alternatively you can avoid using reverse proxies by specifying the `apiUrl` prop in the `form.tsx` component
 
-```sh
+```bash
 npm i @zengenti/contensis-react-base@prerelease --save
 ```
 
 ### Or: Install all packages together
 
-```sh
+```bash
 npm i @contensis/forms @contensis/canvas-react @zengenti/contensis-react-base@prerelease --save
 ```
 
@@ -48,7 +53,7 @@ As a bare minimum add the `formId` prop. This can be hard coded to a specific fo
 
 Canvas rendering packages do not include a built-in render method for rendering Forms. This prevents your app potentially bundling multiple versions of `@contensis/forms` package.
 
-We need to provide a Form component as a block renderer (override) in your Canvas component for example: `<RenderContextProvider blocks={{ _formContentType: FormBlock }}>`.
+Provide a Form component as a block renderer (override) in your Canvas component, for example: `<RenderContextProvider blocks={{ _formContentType: FormBlock }}>`.
 
 In the canvas block renderer, map the prop value: `block?.value?.contentType?.id` to the `formId` prop in your imported `<Form />` component
 

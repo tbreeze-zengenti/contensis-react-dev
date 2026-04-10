@@ -1,14 +1,15 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
+title: Custom headers
 ---
 
-# Custom Headers
+# Custom headers
 
 To define custom headers in your React application, leverage the handleResponses parameter in the ZengentiAppServer configuration. The ZengentiAppServer, located in server.ts, acts as the Express server that serves your React app.
 
 The handleResponses option provides access to the Express request, response, content, and send objects, allowing you to customize headers and manage responses effectively.
 
-```jsx title="An example of how to set a surrogate-control header using a custom response handler"
+```typescript title="An example of how to set a surrogate-control header using a custom response handler"
 const responseHandler = (
   request: any,
   response: any,

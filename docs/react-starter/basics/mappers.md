@@ -1,5 +1,6 @@
 ---
 sidebar_position: 3
+title: Mappers
 ---
 
 # Mappers
@@ -9,9 +10,9 @@ transformations applied.
 
 ## Simple example
 
-Typescript definitions have been omitted from this example for simplicity.
+TypeScript definitions have been omitted from this example for simplicity.
 
-```
+```javascript
 const newsArticleMapper = (props) => {
   return {
     title: props.entryTitle,
@@ -22,16 +23,16 @@ const newsArticleMapper = (props) => {
 };
 ```
 
-## Approches
+## Approaches
 
-There are two main approaches to creating a mapping function; Typescript & JSON path mapper.
+There are two main approaches to creating a mapping function; TypeScript & JSON path mapper.
 
-### Typescript
+### TypeScript
 
 This approach requires setting up type definitions so you can get the benefits of type safety.
-If you are confident with Typescript and the benefits it would be recommended taking this approach.
+If you are confident with TypeScript and the benefits it would be recommended taking this approach.
 
-```
+```typescript
 import { RouteEntry } from '~/util/routeEntry.type';
 import { NewsArticleProps } from './newsArticle.template';
 import { ContentTypeNewsArticle } from '~/models/generated/contentTypesAndComponents.model';
@@ -56,7 +57,7 @@ properties in.
 This approach helps streamline the mapping process and promotes consistency in transformations.
 Note: this does not provide any type definitions.
 
-```
+```typescript
 import { mapJson } from '@zengenti/contensis-react-base/util';
 import { metaMapper } from '~/components/meta/meta.mapper
 

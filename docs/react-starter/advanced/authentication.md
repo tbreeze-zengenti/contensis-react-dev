@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+title: Authentication
 ---
 
 # Authentication
@@ -15,14 +16,14 @@ This method relies on the Contensis platform to handle user authentication, allo
 The Azure-based Single Sign-On (SSO) method leverages Microsoft Azure's identity management system through WSFED (Web Services Federation). This allows seamless authentication by integrating with existing Azure Active Directory setups for secure and centralized login.
 
 :::tip
-The latest version of Contensis React Base is recommended whenever configuring a project for any form of authorised routing. 
+The latest version of Contensis React Base is recommended whenever configuring a project for any form of authorized routing. 
 :::
 
 ## Contensis-based login
 
 Contensis-based authentication allows users to log in using their Contensis accounts. This approach requires a custom login page, and using React hooks from Contensis React Base helps simplify the implementation. When a user accesses a protected route, they are redirected to this login page. After successful authentication, they’re automatically returned to their original destination.
 
-### Define Authorised Groups
+### Define authorized groups
 
 Access control is based on group membership. Define which groups are allowed access to protected routes.
 
@@ -121,7 +122,7 @@ const Login = () => {
 export default Login;
 ```
 
-### Define the Login Route
+### Define the login route
 
 Once the login page is created, you need to define a route for it. By default, CRB (Contensis React Base) uses the `/account/login` path for login pages. To ensure the page is accessible, you should define this route in your application's routing configuration.
 
@@ -132,13 +133,9 @@ Once the login page is created, you need to define a route for it. By default, C
 }
 ```
 
-<aside>
-
 :::tip
-You can access detailed information about the authentication state and the currently authenticated user from the **user state** within the Redux store. 
+You can access detailed information about the authentication state and the currently authenticated user from the **user state** within the Redux store.
 :::
-
-</aside>
 
 ### Setup error page
 
@@ -197,7 +194,7 @@ const production = {
 
 **Note**: Any change to `.env` or `define-config.js` requires restarting the app.
 
-### Define Authorised Groups
+### Define authorized groups
 
 Access control is based on group membership. Define which groups are allowed access to protected routes.
 
@@ -232,12 +229,9 @@ Use `requireLogin` to restrict access to specific routes.
   },
 ```
 
-<aside>
-💡
-
-You can access detailed information about the authentication state and the currently authenticated user from the **user state** within the Redux store. 
-
-</aside>
+:::tip
+You can access detailed information about the authentication state and the currently authenticated user from the **user state** within the Redux store.
+:::
 
 ### Setup error pages
 

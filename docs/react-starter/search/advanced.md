@@ -1,5 +1,6 @@
 ---
 sidebar_position: 5
+title: Advanced search
 ---
 
 # Advanced Search
@@ -151,7 +152,7 @@ const { results, featured } = useFacets<T>({ mappers: SearchTransformations });
 
 ---
 
-## Internationalisation (i18n)
+## Internationalization (i18n)
 
 ### Restrict results to a language
 
