@@ -83,9 +83,37 @@ Fetch Node is a dynamic argument, it can be defined as a `boolean` or an `object
 
 ## Entry link depth
 
-The `linkDepth` parameter allows you to override the global `linkDepth` for the App on a *specific* route. This is great if you need to drill down through various linked entries to access a value however it does bring with it a hit to performance.
+The `linkDepth` parameter allows you to override the global `linkDepth` for the App on a *specific* route. This is great if you need to drill down through various linked entries to access a value however it does bring with it a hit to performance, as the API resolves *every* linked field to that depth.
 
-You can mitigate this hit to performance by populating the `field` argument (see [Optimizing large entries](/docs/react-starter/advanced/tips/optimising-large-entries)) for routes with a custom link depth.
+Note that the `fields` argument does **not** mitigate this performance hit — it only trims the returned JSON (see [Optimizing large entries](/docs/react-starter/advanced/tips/optimising-large-entries)). To reduce the actual query cost of a deep route, resolve links selectively with `fieldLinkDepths` rather than raising the global `linkDepth`.
+
+### Field-specific link depth
+
+The `fieldLinkDepths` parameter resolves links only on the named fields your mapper actually needs, keyed as `{ fieldName: depth }`, so unrelated linked fields are left as `{ sys }` stubs instead of being resolved. It is supported on both `ContentTypeMapping` routes and the `fetchNode` object.
+
+Prefer `fieldLinkDepths` over raising the global `linkDepth`. It avoids over-fetching, and it **must** be used in place of `linkDepth` once your baseline depth is already `2` or higher — raising the global depth resolves all linked fields and is exponentially expensive.
+
+```typescript title="Resolving links selectively on a Content Type Mapping route"
+const contentTypeMappings: ContentTypeMapping[] = [
+  {
+    contentTypeID: 'article',
+    component: Article,
+    entryMapper: entryMapper(articleMapper),
+    fields: [...ArticleFields],
+    linkDepth: 0,
+    fieldLinkDepths: {
+      author: 1, // resolve the linked author entry
+      category: 1, // resolve the linked category entry
+    },
+  },
+];
+```
+
+:::caution
+`fieldLinkDepths` requires Contensis 16+. The maximum depth is `10`, but keep it to a recommended maximum of `4` — and only raise the depth on fields you genuinely need to traverse.
+:::
+
+For the equivalent guidance in a Contensis search, see [`fieldLinkDepths` vs `linkDepth`](/docs/react-starter/search/config#fieldlinkdepths-vs-linkdepth).
 
 
 ## Inject Redux
