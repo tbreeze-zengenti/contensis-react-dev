@@ -106,6 +106,88 @@ const RelatedArticles = () => {
 };
 ```
 
+## Third-party data with a minilist
+
+A minilist isn't limited to the Contensis Delivery API. Instead of referencing a config block in `search.config.ts`, you can pass a **config on the fly** that points the minilist at a custom, non-Contensis API using the `customApi` option. CRB fetches from your endpoint and runs the response through your mapper, giving you the same store-backed `results`/`isLoading`/`paging` model, just sourced externally.
+
+:::note Minilists fetch client-side
+Like every minilist, a `customApi` minilist initialises inside a `useEffect` gated on `selectSearchExists`, so the fetch runs **in the browser after hydration** — not during SSR. The data is therefore absent from the first server-rendered paint. If you need third-party data present at first paint (for SEO, or to avoid a loading flash), use the route-lifecycle saga in [Fetching third-party data](../../advanced/redux/ssr-fetch.md) instead. Reach for a `customApi` minilist when you want an embedded, client-side widget with the minilist's built-in loading/paging/mapping ergonomics and SSR isn't required.
+:::
+
+The example below queries the public [OMDb API](https://www.omdbapi.com/):
+
+```typescript title="src/app/search/minilists/useMovies.minilist.ts"
+import { useEffect, useState } from 'react';
+import { useMinilist } from '@zengenti/contensis-react-base/search';
+import { useSelector } from 'react-redux';
+import { selectSearchExists } from '~/redux/selectors';
+import type { UseMinilistProps } from '@zengenti/contensis-react-base/search';
+
+type MovieProps = {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  link: string;
+};
+
+// Map the third-party response shape into your own result type
+const omdbapiResultMapper = (body: any): MovieProps[] => {
+  return body?.Search?.map((r: any): MovieProps => ({
+    id: r.imdbID,
+    title: r.Title + ' ' + r.Year,
+    description: '',
+    image: r?.Poster !== 'N/A' ? r.Poster : null,
+    link: 'https://www.imdb.com/title/' + r.imdbID,
+  }));
+};
+
+const minilistInitState = { id: '' } as UseMinilistProps;
+
+export default () => {
+  const isSearchSetup = useSelector(selectSearchExists);
+  const [minilistOptions, setMinilistOptions] = useState(minilistInitState);
+
+  useEffect(() => {
+    if (!isSearchSetup) return; // search Redux is injected dynamically — wait for it
+
+    setMinilistOptions({
+      id: 'movies',
+      // config created on the fly rather than read from search.config.ts
+      config: {
+        title: 'Custom Api',
+        customApi: {
+          uri: 'http://www.omdbapi.com/?apikey=b194ff96',
+        },
+      },
+      mappers: {
+        // returns extra query params appended to the customApi uri
+        customApi: () => ({
+          s: 'dawn of the dead', // -> &s=dawn of the dead
+        }),
+        // maps the raw response body into MovieProps[]
+        results: omdbapiResultMapper,
+      },
+    });
+  }, [isSearchSetup]);
+
+  return useMinilist<MovieProps>(minilistOptions);
+};
+```
+
+Key differences from a Contensis-backed minilist:
+
+- **`config` inline, not `id` lookup** — you build the config object in the hook instead of registering it in `search.config.ts`. The `id` (`'movies'`) just namespaces the minilist's Redux state.
+- **`config.customApi.uri`** — the base URL CRB fetches from. Append fixed query params here, or add dynamic ones via the `customApi` mapper.
+- **`mappers.customApi`** — returns an object of query params merged onto the `uri` for each request (the equivalent of `queryParams` for a Contensis minilist).
+- **`mappers.results`** — transforms the raw third-party response body into your typed result array.
+
+The `selectSearchExists` guard still applies — the minilist Redux state is dynamically injected regardless of the data source.
+
+:::caution Secrets and CORS
+The example embeds an API key directly in the `uri`, which means the request runs from the browser and the key is public. That's fine for a free demo key, but for anything sensitive keep the call server-side — proxy it through your SSR/Express layer — or use the Redux saga pattern in [Fetching third-party data](../../advanced/redux/ssr-fetch.md) instead.
+:::
+
 ## Prop API
 
 Props returned by `useMinilist<T>(options)`:
