@@ -166,6 +166,14 @@ onRouteLoad: function* onRouteLoad({ ssr }) {
 },
 ```
 
+:::tip Inspecting the SSR fetch in the browser
+By default the route lifecycle runs on the server, so the saga's network call won't appear
+in your browser's dev tools on the first load. Append `?dynamic=true` to the URL to force the
+app into client-side rendering (CSR) — the route lifecycle then runs in the browser, and you
+can watch the saga's `fetch` fire in the Network tab. This is handy for debugging a
+route-lifecycle fetch in a deployed environment without server access.
+:::
+
 ## 5. Read the data in a component
 
 ```typescript
@@ -207,7 +215,7 @@ has several consequences:
 | **Loading / error** | Hand-rolled `useState` in every component                       | Centralised in the slice (`isLoading`, `isReady`, `error`)              |
 | **State sharing**    | Local to the component; refetched on every mount                | Lives in the store; any component can read it via a selector            |
 | **Hydration**        | Causes a flash of empty content, then a re-render once fetched   | No flash — server and client render the same content                    |
-| **Secrets / CORS**   | Runs in the browser; API keys are exposed                       | Runs server-side during SSR; keys stay on the server                    |
+| **Secrets / CORS**   | Runs in the browser; API keys are exposed                       | Runs server-side during SSR, but re-runs in the browser on client navigation — proxy via a [server feature](../server-features.md#proxying-a-third-party-api) if a real secret is involved |
 | **Testability**      | Requires mounting the component and mocking `fetch`             | Saga is a plain generator — test by stepping through yielded effects    |
 
 **Rule of thumb:** anything needed for the initial render — and anything tied to page load — must
@@ -218,13 +226,13 @@ irrelevant.
 ## Things to watch out for
 
 - **SSR and `fetch`** — sagas run on the server during SSR. Node 18+ provides a global
-  `fetch`, but confirm your SSR runtime supports it; otherwise the call will only resolve
-  on the client.
+  `fetch`; confirm your SSR runtime supports it, otherwise import a polyfill.
 - **Always map the response** — pass the third-party payload through a `.mapper.ts` before
   it reaches the store. The mapper is a shape and security boundary; it prevents unexpected
   fields from leaking into the client.
 - **CORS and secrets** — if the API requires an API key, do not call it from the browser.
-  Keep the call server-side only, or proxy it through your SSR/Express layer.
+  Keep the call server-side only, or proxy it through your SSR/Express layer with a
+  [server feature](../server-features.md#proxying-a-third-party-api).
 - **Client-only fetches** — for a one-off, client-side-only fetch (for example, a button
   click that is not needed for SSR), a `useEffect` + `fetch` in the component is acceptable.
   Anything tied to page load should go through a saga so it is part of the SSR render. For an

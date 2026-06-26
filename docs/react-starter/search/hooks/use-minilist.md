@@ -185,7 +185,7 @@ Key differences from a Contensis-backed minilist:
 The `selectSearchExists` guard still applies — the minilist Redux state is dynamically injected regardless of the data source.
 
 :::caution Secrets and CORS
-The example embeds an API key directly in the `uri`, which means the request runs from the browser and the key is public. That's fine for a free demo key, but for anything sensitive keep the call server-side — proxy it through your SSR/Express layer — or use the Redux saga pattern in [Fetching third-party data](../../advanced/redux/ssr-fetch.md) instead.
+The example embeds an API key directly in the `uri`, which means the request runs from the browser and the key is public. That's fine for a free demo key, but for anything sensitive keep the call server-side: proxy it through a [server feature](../../advanced/server-features.md#proxying-a-third-party-api) (and point the minilist's `customApi.uri` at your own `/api/...` endpoint), or use the Redux saga pattern in [Fetching third-party data](../../advanced/redux/ssr-fetch.md) instead.
 :::
 
 ## Prop API
